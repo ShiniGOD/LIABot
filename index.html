@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Chat Bot</title>
+    <style>
+        .chat-container {
+            width: 600px; /* Default desktop size */
+            height: 70vh;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        /* Tablet Size */
+        @media (max-width: 768px) {
+            .chat-container {
+                width: 80%;
+                height: 65vh;
+                right: 10px;
+                bottom: 10px;
+            }
+        }
+
+        /* Mobile Size */
+        @media (max-width: 480px) {
+            .chat-container {
+                width: 100%;
+                height: 80vh;
+                bottom: 0;
+                right: 0;
+                border-radius: 0;
+            }
+            
+            .chat-header {
+                border-radius: 0;
+            }
+        }
+
+        .chat-header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            font-size: 1.2em;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            padding: 12px 18px;
+            border-radius: 20px;
+            max-width: 80%;
+            word-wrap: break-word;
+            font-size: 1em;
+            line-height: 1.4;
+        }
+
+        .user-message {
+            background-color: #007bff;
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+        }
+
+        .bot-message {
+            background-color: #e9ecef;
+            margin-right: auto;
+            border-bottom-left-radius: 5px;
+        }
+
+        .chat-input {
+            padding: 20px;
+            border-top: 1px solid #ccc;
+            display: flex;
+            gap: 15px;
+            background-color: #f8f9fa;
+        }
+
+        input {
+            flex: 1;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 25px;
+            font-size: 1em;
+        }
+
+        button {
+            padding: 12px 25px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        /* Mobile Input Adjustments */
+        @media (max-width: 480px) {
+            .chat-input {
+                padding: 15px;
+                flex-direction: row;
+            }
+            
+            input {
+                padding: 10px;
+            }
+            
+            button {
+                padding: 10px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h3>Chat Assistant</h3>
+        </div>
+        <div class="chat-messages" id="chat-messages"></div>
+        <div class="chat-input">
+            <input type="text" id="user-input" placeholder="Type your message...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        const chatMessages = document.getElementById('chat-messages');
+        const userInput = document.getElementById('user-input');
+
+        // Handle Enter key press
+        userInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        function appendMessage(message, isUser) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+            messageDiv.textContent = message;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function getBotResponse(userMessage) {
+            const responses = {
+                'hello': 'Hello! How can I assist you today?',
+                'help': 'I can help with general inquiries. Try asking about our services or policies!',
+                'hours': 'Our business hours are Monday-Friday, 9 AM to 5 PM.',
+                'contact': 'You can reach us at contact@company.com or 1-800-123-4567.',
+                'bye': 'Thank you for chatting with us! Have a great day!',
+                'default': 'I appreciate your message. For more detailed assistance, please contact our support team.'
+            };
+
+            userMessage = userMessage.toLowerCase();
+            return responses[userMessage] || responses['default'];
+        }
+
+        function sendMessage() {
+            const message = userInput.value.trim();
+            
+            if (message === '') return;
+
+            // Append user message
+            appendMessage(message, true);
+
+            // Get and append bot response
+            setTimeout(() => {
+                const botResponse = getBotResponse(message);
+                appendMessage(botResponse, false);
+            }, 800);
+
+            // Clear input
+            userInput.value = '';
+        }
+    </script>
+</body>
+</html>
