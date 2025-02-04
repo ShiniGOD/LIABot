@@ -3,7 +3,7 @@
 <div align="center">
   <marquee behavior="alternate" direction="right" scrollamount="8">
     <h3>🎋 おいでませ！ Welcome to LIA's Matcha Garden</h3>
-    <img src="https://media.giphy.com/media/J2X4GYHlCkzSwk4XzX/giphy.gif" width="120">
+    <img src="https://64.media.tumblr.com/3edaee74a8721dd781871b4888a6294c/tumblr_p5lsunHzaL1uhx88zo1_500.gif" width="500">
   </marquee>
 </div>
 
