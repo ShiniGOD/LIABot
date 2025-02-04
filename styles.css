@@ -150,6 +150,21 @@ button:hover {
     transform: scale(1.05);
 }
 
+.loading-dots {
+    display: inline-block;
+}
+
+.loading-dots::after {
+    content: '.';
+    animation: dots 1.4s infinite steps(3, end);
+}
+
+@keyframes dots {
+    0%, 20% { content: '.'; }
+    40% { content: '..'; }
+    60%, 100% { content: '...'; }
+}
+
 @media (max-width: 768px) {
     .chat-container {
         width: 90%;
