@@ -11,6 +11,7 @@
             background: linear-gradient(to bottom, #87CEEB, #E0FFFF);
             animation: skyAnimation 20s infinite linear;
             overflow: hidden;
+            font-family: 'Segoe UI', sans-serif;
         }
 
         @keyframes skyAnimation {
@@ -34,8 +35,9 @@
         }
 
         .chat-container {
-            width: 600px;
-            height: 70vh;
+            width: 800px; /* Wider chat box */
+            max-width: 90%;
+            height: 80vh;
             border: 1px solid rgba(255, 255, 255, 0.3);
             border-radius: 15px;
             position: fixed;
@@ -94,7 +96,7 @@
         }
 
         .message {
-            padding: 12px 18px;
+            padding: 15px 20px;
             border-radius: 20px;
             max-width: 80%;
             word-wrap: break-word;
@@ -137,6 +139,7 @@
             border-radius: 25px;
             font-size: 1em;
             background: rgba(255, 255, 255, 0.9);
+            min-width: 200px;
         }
 
         button {
@@ -156,15 +159,20 @@
 
         @media (max-width: 768px) {
             .chat-container {
-                width: 80%;
+                width: 90%;
+                height: 90vh;
+                right: 5%;
+                bottom: 5%;
                 backdrop-filter: blur(5px);
             }
-        }
-
-        @media (max-width: 480px) {
-            .chat-container {
-                width: 100%;
-                border-radius: 0;
+            
+            .chat-messages {
+                padding: 15px;
+            }
+            
+            .message {
+                max-width: 90%;
+                padding: 12px 18px;
             }
         }
     </style>
@@ -182,18 +190,22 @@
         </div>
         <div class="chat-messages" id="chat-messages"></div>
         <div class="chat-input">
-            <input type="text" id="user-input" placeholder="Ask about nature...">
-            <button onclick="sendMessage()">🌼 Send</button>
+            <input type="text" id="user-input" placeholder="Ask about nature..." autocomplete="off">
+            <button id="send-btn">🌼 Send</button>
         </div>
     </div>
 
     <script>
         const chatMessages = document.getElementById('chat-messages');
         const userInput = document.getElementById('user-input');
+        const sendBtn = document.getElementById('send-btn');
 
+        // Event Listeners
         userInput.addEventListener('keypress', function(e) {
             if (e.key === 'Enter') sendMessage();
         });
+
+        sendBtn.addEventListener('click', sendMessage);
 
         function appendMessage(message, isUser) {
             const messageDiv = document.createElement('div');
@@ -206,11 +218,13 @@
         function getBotResponse(userMessage) {
             const natureResponses = {
                 'hello': 'Hello! 🌻 How can I help you connect with nature today?',
-                'plants': 'Did you know plants improve air quality and reduce stress?',
-                'weather': 'The natural world is always changing - like the weather!',
-                'animal': 'Animals are amazing creatures with unique behaviors.',
-                'tree': 'Trees provide oxygen and shelter for countless species.',
-                'default': 'Nature teaches us patience and resilience. 🌱 What else would you like to know?'
+                'hi': 'Hi there! 🌿 What would you like to know about nature?',
+                'plants': 'Plants are amazing! Did you know they can improve air quality and reduce stress?',
+                'weather': 'The weather is always changing, just like nature itself!',
+                'tree': 'Trees are essential for life - they provide oxygen and shelter for countless species.',
+                'animal': 'Animals are incredible creatures with unique behaviors and adaptations.',
+                'help': 'I can help you learn about plants, animals, weather, and more! Just ask!',
+                'default': 'Nature is full of wonders! 🌱 What would you like to explore today?'
             };
 
             userMessage = userMessage.toLowerCase();
@@ -229,6 +243,7 @@
             }, 800);
 
             userInput.value = '';
+            userInput.focus();
         }
     </script>
 </body>
