@@ -52,7 +52,7 @@ async function sendMessage() {
 }
 
 async function getBotResponse(userMessage) {
-    const API_KEY = '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'; // 🔑 REPLACE WITH YOUR OPENAI API KEY
+    const API_KEY = 'sk-abcdef1234567890abcdef1234567890abcdef12'; // 🔑 REPLACE WITH YOUR OPENAI API KEY
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
         method: 'POST',
         headers: {
