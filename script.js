@@ -1,85 +1,67 @@
-const chatMessages = document.getElementById('chat-messages');
-const userInput = document.getElementById('user-input');
-const sendBtn = document.getElementById('send-btn');
+document.addEventListener('DOMContentLoaded', () => {
+    const chatMessages = document.getElementById('chat-messages');
+    const userInput = document.getElementById('user-input');
+    const sendBtn = document.getElementById('send-btn');
 
-// Event Listeners
-userInput.addEventListener('keypress', (e) => e.key === 'Enter' && sendMessage());
-sendBtn.addEventListener('click', sendMessage);
+    // Add initial bot greeting
+    addBotMessage("🌿 Welcome to Nature Chat! Ask me about plants, animals, weather, or anything nature-related!");
 
-function appendMessage(message, isUser) {
-    const messageDiv = document.createElement('div');
-    messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
-    messageDiv.textContent = message;
-    chatMessages.appendChild(messageDiv);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-}
-
-async function sendMessage() {
-    const message = userInput.value.trim();
-    if (!message) return;
-
-    // Disable input during processing
-    userInput.disabled = true;
-    sendBtn.disabled = true;
-
-    appendMessage(message, true);
-
-    // Show loading
-    const loadingDiv = document.createElement('div');
-    loadingDiv.className = 'message bot-message loading-dots';
-    loadingDiv.textContent = 'Thinking about nature';
-    chatMessages.appendChild(loadingDiv);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-
-    try {
-        const response = await getBotResponse(message);
-        loadingDiv.remove();
-        appendMessage(response, false);
-    } catch (error) {
-        loadingDiv.remove();
-        appendMessage("Sorry, I'm having trouble connecting to nature 🌧️", false);
-        console.error('Error:', error);
+    function addUserMessage(message) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message user-message';
+        messageDiv.textContent = message;
+        chatMessages.appendChild(messageDiv);
+        scrollToBottom();
     }
 
-    // Reset input
-    userInput.value = '';
-    userInput.disabled = false;
-    sendBtn.disabled = false;
-    userInput.focus();
-}
+    function addBotMessage(message) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message bot-message';
+        messageDiv.innerHTML = message;
+        chatMessages.appendChild(messageDiv);
+        scrollToBottom();
+    }
 
-async function getBotResponse(userMessage) {
-    const API_KEY = 'ds-sk-your-api-key-here'; // 🔑 Replace with your DeepSeek key
-    const API_URL = 'https://api.deepseek.com/v1/chat/completions';
+    function showTypingIndicator() {
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'message bot-message';
+        typingDiv.innerHTML = '<div class="loading-dots"></div>';
+        chatMessages.appendChild(typingDiv);
+        scrollToBottom();
+        return typingDiv;
+    }
 
-    const response = await fetch(API_URL, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${API_KEY}`
-        },
-        body: JSON.stringify({
-            model: "deepseek-chat",
-            messages: [
-                {
-                    role: "system",
-                    content: "You are a friendly nature expert. Provide concise answers about plants, animals, and ecosystems using emojis. Keep responses under 2 sentences."
-                },
-                {
-                    role: "user",
-                    content: userMessage
-                }
-            ],
-            temperature: 0.7,
-            max_tokens: 150
-        })
+    function scrollToBottom() {
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    async function handleUserMessage() {
+        const message = userInput.value.trim();
+        if (!message) return;
+
+        // Add user message and clear input
+        addUserMessage(message);
+        userInput.value = '';
+        userInput.focus();
+
+        // Show typing indicator
+        const typingIndicator = showTypingIndicator();
+
+        // Simulate AI processing delay
+        setTimeout(() => {
+            // Get and display bot response
+            const botResponse = getBotResponse(message);
+            typingIndicator.remove();
+            addBotMessage(botResponse);
+        }, 1500);
+    }
+
+    // Event listeners
+    sendBtn.addEventListener('click', handleUserMessage);
+    userInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleUserMessage();
     });
 
-    if (!response.ok) {
-        const error = await response.json();
-        throw new Error(`API Error: ${error.message}`);
-    }
-
-    const data = await response.json();
-    return data.choices[0].message.content.trim();
-}
+    // Initial scroll to bottom
+    scrollToBottom();
+});
