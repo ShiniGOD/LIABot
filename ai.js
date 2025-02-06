@@ -1,53 +1,50 @@
-const natureKnowledgeBase = {
-    flora: {
-        patterns: ['plant', 'tree', 'flower', 'leaf', 'photosynthesis'],
+const liaKnowledge = {
+    forest: {
+        patterns: ['tree', 'mushroom', 'river', 'glade', 'grove'],
         responses: [
-            '🌱 Did you know a sunflower tracks the sun? This is called heliotropism!',
-            '🌳 The Amazon Rainforest produces 20% of the world\'s oxygen',
-            '🍄 Fungi have their own biological kingdom'
+            '🌳 *rustles leaves* The oldest tree here witnessed 300 human generations!',
+            '🍄 Fungal networks connect trees like nature\'s internet!',
+            '🌿 Forest secret: Moss grows north-side of trees in this hemisphere'
         ]
     },
-    fauna: {
-        patterns: ['animal', 'bird', 'insect', 'mammal', 'species'],
+    creatures: {
+        patterns: ['animal', 'owl', 'deer', 'squirrel', 'rabbit'],
         responses: [
-            '🦋 Butterflies taste with their feet!',
-            '🐳 Blue whales can hear each other up to 1,000 miles away',
-            '🐝 Honeybees communicate through dance'
+            '🦉 Owls hunt silently - their feathers break turbulence into micro-currents!',
+            '🐇 Rabbit fact: They eat their own droppings for extra nutrients!',
+            '🦌 Deer can smell human scent from ½ mile away!'
         ]
     },
-    weather: {
-        patterns: ['weather', 'climate', 'rain', 'sun', 'forecast'],
+    magic: {
+        patterns: ['spell', 'enchanted', 'potion', 'magic', 'crystal'],
         responses: [
-            '⛅ Highest recorded temperature: 134°F in Death Valley',
-            '🌧️ Raindrops fall at 14 mph average speed',
-            '❄️ Snowflakes are always six-sided crystals'
+            '✨ Nature\'s magic: Photosynthesis converts sunlight into life energy!',
+            '🔮 Crystal wisdom: Quartz helps amplify plant growth energies',
+            '🧪 Ancient recipe: Willow bark tea contains natural pain relievers'
         ]
     },
     basic: {
         patterns: ['hello', 'hi', 'help'],
         responses: [
-            'Hello! 🌻 How can I help you connect with nature today?',
-            'Hi there! 🌿 Ask about plants, animals, or weather!',
-            'Nature facts at your service! 🌼 What would you like to know?'
+            '🌼 Greetings! Lia here - shall we explore the forest mysteries?',
+            '🍂 *tinkling laugh* Hello friend! Ready for woodland wisdom?',
+            '🌱 Elven greeting! Ask about creatures, plants, or forest magic!'
         ]
     }
 };
 
-const defaultResponses = [
-    '🌍 Earth has over 3 trillion trees! Ask me anything natural!',
-    '🌼 Try asking about plants, animals, or weather patterns!',
-    '🔍 Did you know? The Great Barrier Reef is visible from space!'
+const liaDefaults = [
+    '🌙 *Lia hums* Did you know fireflies light up through chemical reactions?',
+    '🕸️ Forest tip: Spider silk is stronger than steel of the same thickness!',
+    '🌲 Whispered secret: Trees share nutrients through their root networks'
 ];
 
-function findBestMatch(userInput) {
+function getLiaResponse(userInput) {
     const input = userInput.toLowerCase();
-    return Object.entries(natureKnowledgeBase).find(([category, data]) => 
+    const category = Object.entries(liaKnowledge).find(([_, data]) => 
         data.patterns.some(pattern => input.includes(pattern))
     );
-}
-
-function getBotResponse(userInput) {
-    const match = findBestMatch(userInput);
-    const responses = match ? natureKnowledgeBase[match[0]].responses : defaultResponses;
+    
+    const responses = category ? liaKnowledge[category[0]].responses : liaDefaults;
     return responses[Math.floor(Math.random() * responses.length)];
 }
