@@ -1,3 +1,4 @@
+/* Base styles */
 body {
     margin: 0;
     min-height: 100vh;
@@ -12,6 +13,7 @@ body {
     50% { background-color: #FFA07A; }
 }
 
+/* Leaves animation */
 .leaf {
     position: absolute;
     width: 40px;
@@ -27,6 +29,7 @@ body {
     100% { transform: translateY(-100vh) rotate(360deg); }
 }
 
+/* Chat container */
 .chat-container {
     width: 800px;
     max-width: 90%;
@@ -46,15 +49,34 @@ body {
     overflow: hidden;
 }
 
-/* Rest of your original styles combined with new enhancements */
-.message.bot-message {
+/* Messages styling */
+.message {
+    padding: 15px 20px;
+    border-radius: 20px;
+    max-width: 80%;
+    word-wrap: break-word;
+    font-size: 1em;
+    line-height: 1.4;
     position: relative;
-    padding: 15px 20px 15px 60px;
-    background: linear-gradient(to right, #f8fff8 60%, #e8f5e9);
-    border-radius: 25px 25px 25px 5px;
+    transition: transform 0.3s ease;
 }
 
-.message.bot-message::before {
+.user-message {
+    background: linear-gradient(to right, #228B22, #32CD32);
+    color: white;
+    margin-left: auto;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.bot-message {
+    background: linear-gradient(to right, #f8fff8, #ffffff);
+    margin-right: auto;
+    border: 1px solid rgba(34, 139, 34, 0.1);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    padding-left: 50px;
+}
+
+.bot-message::before {
     content: '🌿';
     position: absolute;
     left: 15px;
@@ -63,6 +85,59 @@ body {
     font-size: 1.5em;
 }
 
+/* Input area */
+.chat-input {
+    padding: 20px;
+    border-top: 1px solid rgba(34, 139, 34, 0.1);
+    display: flex;
+    gap: 15px;
+    background: rgba(248, 255, 248, 0.9);
+}
+
+input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid rgba(34, 139, 34, 0.3);
+    border-radius: 25px;
+    font-size: 1em;
+    background: rgba(255, 255, 255, 0.9);
+    transition: 0.3s all ease;
+}
+
+button {
+    padding: 12px 25px;
+    background: linear-gradient(to right, #228B22, #32CD32);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-size: 1em;
+    transition: transform 0.2s ease;
+}
+
+/* Animations */
+.shake {
+    animation: shake 0.4s ease-in-out;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    75% { transform: translateX(8px); }
+}
+
+.loading-dots::after {
+    content: '.';
+    animation: dots 1.4s infinite steps(3, end);
+}
+
+@keyframes dots {
+    0%, 20% { content: '.'; }
+    40% { content: '..'; }
+    60%, 100% { content: '...'; }
+}
+
+/* Quick topics */
 .quick-topics {
     padding: 15px;
     display: flex;
@@ -81,16 +156,9 @@ body {
     display: flex;
     align-items: center;
     gap: 8px;
-    color: white;
-    cursor: pointer;
-    transition: transform 0.2s ease;
 }
 
-.quick-topics button:hover {
-    transform: scale(1.05);
-}
-
-/* Keep original animations and mobile styles */
+/* Mobile responsiveness */
 @media (max-width: 768px) {
     .chat-container {
         width: 90%;
@@ -98,6 +166,11 @@ body {
         right: 5%;
         bottom: 5%;
         transform: none;
+    }
+    
+    .message {
+        max-width: 90%;
+        padding: 12px 18px;
     }
     
     .quick-topics {
