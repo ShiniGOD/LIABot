@@ -2,33 +2,41 @@ const natureKnowledgeBase = {
     flora: {
         patterns: ['plant', 'tree', 'flower', 'leaf', 'photosynthesis'],
         responses: [
-            '🌱 Did you know a sunflower tracks the sun across the sky? This is called heliotropism!',
+            '🌱 Did you know a sunflower tracks the sun? This is called heliotropism!',
             '🌳 The Amazon Rainforest produces 20% of the world\'s oxygen',
-            '🍄 Fungi have their own biological kingdom separate from plants and animals'
+            '🍄 Fungi have their own biological kingdom'
         ]
     },
     fauna: {
         patterns: ['animal', 'bird', 'insect', 'mammal', 'species'],
         responses: [
-            '🦋 Butterflies taste with their feet! <img src="butterfly-icon.png" class="nature-icon">',
+            '🦋 Butterflies taste with their feet!',
             '🐳 Blue whales can hear each other up to 1,000 miles away',
-            '🐝 Honeybees communicate through dance movements'
+            '🐝 Honeybees communicate through dance'
         ]
     },
     weather: {
         patterns: ['weather', 'climate', 'rain', 'sun', 'forecast'],
         responses: [
-            '⛅ The highest temperature ever recorded was 134°F (56.7°C) in Death Valley',
-            '🌧️ Raindrops fall at an average speed of 14 mph',
+            '⛅ Highest recorded temperature: 134°F in Death Valley',
+            '🌧️ Raindrops fall at 14 mph average speed',
             '❄️ Snowflakes are always six-sided crystals'
+        ]
+    },
+    basic: {
+        patterns: ['hello', 'hi', 'help'],
+        responses: [
+            'Hello! 🌻 How can I help you connect with nature today?',
+            'Hi there! 🌿 Ask about plants, animals, or weather!',
+            'Nature facts at your service! 🌼 What would you like to know?'
         ]
     }
 };
 
 const defaultResponses = [
-    '🌍 Nature trivia: Earth has over 3 trillion trees! What would you like to explore?',
+    '🌍 Earth has over 3 trillion trees! Ask me anything natural!',
     '🌼 Try asking about plants, animals, or weather patterns!',
-    '🔍 Did you know? The Great Barrier Reef can be seen from space!'
+    '🔍 Did you know? The Great Barrier Reef is visible from space!'
 ];
 
 function findBestMatch(userInput) {
