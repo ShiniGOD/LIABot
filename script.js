@@ -4,8 +4,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const sendBtn = document.getElementById('send-btn');
 
     // Load chat history or show initial greeting
-    loadChatHistory() || addBotMessage("🌿 Welcome to Nature Chat! Ask about nature!");
+    if (!loadChatHistory()) {
+        addBotMessage("🌿 Welcome to Nature Chat! Ask about plants, animals, or weather!");
+    }
 
+    // Message handling functions
     function addUserMessage(message) {
         const messageDiv = document.createElement('div');
         messageDiv.className = 'message user-message';
@@ -33,7 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return typingDiv;
     }
 
-    // Local Storage Functions
+    // Chat history management
     function saveChatHistory() {
         const messages = Array.from(chatMessages.children)
             .filter(el => el.classList.contains('message'))
@@ -58,7 +61,50 @@ document.addEventListener('DOMContentLoaded', () => {
         return false;
     }
 
-    // Interactive Quick Topics
+    // Enhanced message handler
+    async function handleUserMessage() {
+        const message = userInput.value.trim();
+        
+        if (!message) {
+            userInput.placeholder = "Please type a message...";
+            userInput.classList.add('shake');
+            setTimeout(() => userInput.classList.remove('shake'), 500);
+            return;
+        }
+
+        addUserMessage(message);
+        userInput.value = '';
+        userInput.focus();
+
+        const typingIndicator = showTypingIndicator();
+
+        setTimeout(() => {
+            try {
+                const botResponse = getBotResponse(message);
+                typingIndicator.remove();
+                addBotMessage(botResponse);
+            } catch (error) {
+                console.error('Error:', error);
+                typingIndicator.remove();
+                addBotMessage("🌧️ Oops! My nature connection is fuzzy right now...");
+            }
+        }, 1500);
+    }
+
+    // Event listeners with delegation
+    document.addEventListener('click', (e) => {
+        if (e.target.matches('#send-btn, #send-btn *')) {
+            handleUserMessage();
+        }
+    });
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' && document.activeElement === userInput) {
+            handleUserMessage();
+        }
+    });
+
+    // Quick topics buttons
     function createInteractiveButtons() {
         const quickTopics = document.createElement('div');
         quickTopics.className = 'quick-topics';
@@ -69,52 +115,25 @@ document.addEventListener('DOMContentLoaded', () => {
         `;
         chatMessages.parentNode.insertBefore(quickTopics, chatMessages.nextSibling);
 
-        document.querySelectorAll('.quick-topics button').forEach(button => {
-            button.addEventListener('click', () => {
-                const topic = button.dataset.topic;
-                handleTopicSelection(topic);
-            });
+        quickTopics.addEventListener('click', (e) => {
+            if (e.target.tagName === 'BUTTON') {
+                const topic = e.target.dataset.topic;
+                const questions = {
+                    flora: ['Tell me about trees', 'How do plants grow?', 'Flower facts'],
+                    fauna: ['Animal habitats', 'Bird migration', 'Insect species'],
+                    weather: ['Climate change', 'Rain patterns', 'Weather prediction']
+                };
+                userInput.value = questions[topic][Math.floor(Math.random() * 3)];
+                handleUserMessage();
+            }
         });
     }
 
-    function handleTopicSelection(topic) {
-        const sampleQuestions = {
-            flora: ['Tell me about trees', 'How do plants grow?', 'Flower facts'],
-            fauna: ['Animal habitats', 'Bird migration', 'Insect species'],
-            weather: ['Climate change', 'Rain patterns', 'Weather prediction']
-        };
-        userInput.value = sampleQuestions[topic][Math.floor(Math.random() * 3)];
-        handleUserMessage();
-    }
-
-    async function handleUserMessage() {
-        const message = userInput.value.trim();
-        if (!message) return;
-
-        addUserMessage(message);
-        userInput.value = '';
-        userInput.focus();
-
-        const typingIndicator = showTypingIndicator();
-
-        setTimeout(() => {
-            const botResponse = getBotResponse(message);
-            typingIndicator.remove();
-            addBotMessage(botResponse);
-        }, 1500);
-    }
-
+    // Initial setup
     function scrollToBottom() {
         chatMessages.scrollTop = chatMessages.scrollHeight;
     }
 
-    // Event Listeners
-    sendBtn.addEventListener('click', handleUserMessage);
-    userInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') handleUserMessage();
-    });
-
-    // Initial Setup
     createInteractiveButtons();
     scrollToBottom();
 });
