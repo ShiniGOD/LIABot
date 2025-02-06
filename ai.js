@@ -1,15 +1,45 @@
-function getBotResponse(userMessage) {
-    const natureResponses = {
-        'hello': 'Hello! 🌻 How can I help you connect with nature today?',
-        'hi': 'Hi there! 🌿 What would you like to know about nature?',
-        'plants': 'Plants are amazing! Did you know they can improve air quality and reduce stress?',
-        'weather': 'The weather is always changing, just like nature itself!',
-        'tree': 'Trees are essential for life - they provide oxygen and shelter for countless species.',
-        'animal': 'Animals are incredible creatures with unique behaviors and adaptations.',
-        'help': 'I can help you learn about plants, animals, weather, and more! Just ask!',
-        'default': 'Nature is full of wonders! 🌱 What would you like to explore today?'
-    };
+const natureKnowledgeBase = {
+    flora: {
+        patterns: ['plant', 'tree', 'flower', 'leaf', 'photosynthesis'],
+        responses: [
+            '🌱 Did you know a sunflower tracks the sun across the sky? This is called heliotropism!',
+            '🌳 The Amazon Rainforest produces 20% of the world\'s oxygen',
+            '🍄 Fungi have their own biological kingdom separate from plants and animals'
+        ]
+    },
+    fauna: {
+        patterns: ['animal', 'bird', 'insect', 'mammal', 'species'],
+        responses: [
+            '🦋 Butterflies taste with their feet! <img src="butterfly-icon.png" class="nature-icon">',
+            '🐳 Blue whales can hear each other up to 1,000 miles away',
+            '🐝 Honeybees communicate through dance movements'
+        ]
+    },
+    weather: {
+        patterns: ['weather', 'climate', 'rain', 'sun', 'forecast'],
+        responses: [
+            '⛅ The highest temperature ever recorded was 134°F (56.7°C) in Death Valley',
+            '🌧️ Raindrops fall at an average speed of 14 mph',
+            '❄️ Snowflakes are always six-sided crystals'
+        ]
+    }
+};
 
-    userMessage = userMessage.toLowerCase();
-    return natureResponses[userMessage] || natureResponses['default'];
+const defaultResponses = [
+    '🌍 Nature trivia: Earth has over 3 trillion trees! What would you like to explore?',
+    '🌼 Try asking about plants, animals, or weather patterns!',
+    '🔍 Did you know? The Great Barrier Reef can be seen from space!'
+];
+
+function findBestMatch(userInput) {
+    const input = userInput.toLowerCase();
+    return Object.entries(natureKnowledgeBase).find(([category, data]) => 
+        data.patterns.some(pattern => input.includes(pattern))
+    );
+}
+
+function getBotResponse(userInput) {
+    const match = findBestMatch(userInput);
+    const responses = match ? natureKnowledgeBase[match[0]].responses : defaultResponses;
+    return responses[Math.floor(Math.random() * responses.length)];
 }
