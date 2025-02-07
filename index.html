@@ -4,27 +4,179 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lia - Forest Elf Companion</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* ===== ENHANCED STYLES ===== */
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: linear-gradient(to bottom, #0a2f0a, #1b5e20);
+            animation: skyAnimation 20s infinite linear;
+            overflow: hidden;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        @keyframes skyAnimation {
+            0%, 100% { background-color: #0a2f0a; }
+            50% { background-color: #1a237e; }
+        }
+
+        .leaf {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%238bc34a"><path d="M12 3c-3.3 0-6 2.7-6 6 0 1.5.7 2.9 1.7 3.8-1 2.4-3.4 4.2-6.2 4.2H2v2h1.5c3.6 0 6.8-2.3 8-5.6.5 1.2 1.1 2.3 1.8 3.3-1.1 1-1.8 2.5-1.8 4.1 0 3.3 2.7 6 6 6s6-2.7 6-6c0-1.6-.7-3.1-1.8-4.1.7-1 1.3-2.1 1.8-3.3 1.2 3.3 4.4 5.6 8 5.6H22v-2h-1.5c-2.8 0-5.2-1.8-6.2-4.2 1-.9 1.7-2.3 1.7-3.8 0-3.3-2.7-6-6-6z"/></svg>');
+            animation: float 15s infinite linear;
+            opacity: 0.7;
+            z-index: 1;
+            filter: drop-shadow(0 0 5px #8bc34a);
+        }
+
+        .chat-container {
+            width: 1000px;
+            height: 90vh;
+            max-width: 95%;
+            border-radius: 20px;
+            position: fixed;
+            bottom: 40px;
+            right: 40px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+            transform: perspective(1000px) rotateX(2deg);
+            z-index: 2;
+        }
+
+        .chat-messages {
+            padding: 30px;
+            gap: 25px;
+            font-size: 1.1em;
+        }
+
+        .message {
+            max-width: 88%;
+            padding: 20px 28px;
+            border-radius: 25px;
+            line-height: 1.5;
+        }
+
+        /* ===== FUNCTIONAL FIXES ===== */
+        #send-btn {
+            padding: 16px 35px;
+            font-size: 1.2em;
+        }
+
+        input {
+            font-size: 1.2em;
+            padding: 16px 25px;
+        }
+
+        @media (max-width: 768px) {
+            .chat-container {
+                width: 100%;
+                height: 95vh;
+                bottom: 10px;
+                right: 10px;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Enchanted Leaves -->
-    <div class="leaf" style="left: 10%; animation-delay: 0s"></div>
-    <div class="leaf" style="left: 30%; animation-delay: 2s"></div>
-    <div class="leaf" style="left: 70%; animation-delay: 4s"></div>
-    <div class="leaf" style="left: 90%; animation-delay: 6s"></div>
+    <div class="leaf" style="left: 5%; animation-delay: 0s"></div>
+    <div class="leaf" style="left: 25%; animation-delay: 3s"></div>
+    <div class="leaf" style="left: 75%; animation-delay: 5s"></div>
+    <div class="leaf" style="left: 90%; animation-delay: 7s"></div>
 
     <div class="chat-container">
         <div class="chat-header">
-            <h3>🧚♀️ Lia - Your Forest Guide</h3>
+            <h3>🧚♀️ Lia - Forest Guide</h3>
         </div>
         <div class="chat-messages" id="chat-messages"></div>
         <div class="chat-input">
-            <input type="text" id="user-input" placeholder="Ask the forest elf..." autocomplete="off">
-            <button id="send-btn">🍄 Send</button>
+            <input type="text" id="user-input" placeholder="Ask Lia about the forest..." autocomplete="off">
+            <button id="send-btn">🌿 Send</button>
         </div>
     </div>
 
-    <script src="ai.js"></script>
-    <script src="script.js"></script>
+    <script>
+        // ===== ENHANCED AI =====
+        const liaWisdom = {
+            flora: {
+                patterns: ['plant', 'tree', 'flower', 'herb', 'moss'],
+                responses: [
+                    '🌳 Ancient trees store memories in their rings...',
+                    '🌸 Flowers use UV patterns invisible to humans',
+                    '🍃 Moss grows 1mm per year but lives 10,000 years'
+                ]
+            },
+            fauna: {
+                patterns: ['animal', 'bird', 'deer', 'frog', 'owl'],
+                responses: [
+                    '🦉 Owls have three eyelids for different purposes',
+                    '🐇 Rabbits can leap 3 meters in a single jump!',
+                    '🦌 Deer can rotate ears 180 degrees without moving'
+                ]
+            },
+            magic: {
+                patterns: ['spell', 'enchanted', 'potion', 'crystal', 'magic'],
+                responses: [
+                    '🔮 Moonlight enhances plant growth energy',
+                    '✨ Forest magic: Trees communicate through roots',
+                    '💧 Water memory holds nature's ancient wisdom'
+                ]
+            }
+        };
+
+        function getLiaResponse(input) {
+            input = input.toLowerCase();
+            const category = Object.entries(liaWisdom).find(([_, data]) => 
+                data.patterns.some(pattern => input.includes(pattern))
+            );
+            const responses = category ? liaWisdom[category[0]].responses : [
+                '🌌 The forest whispers answers in the wind...',
+                '🍂 Look to the patterns in the leaves...',
+                '🕊️ Nature speaks through subtle signs around us'
+            ];
+            return responses[Math.floor(Math.random() * responses.length)];
+        }
+
+        // ===== WORKING MESSAGING SYSTEM =====
+        document.addEventListener('DOMContentLoaded', () => {
+            const chat = document.getElementById('chat-messages');
+            const input = document.getElementById('user-input');
+            const btn = document.getElementById('send-btn');
+
+            // Event Listeners (Fixed Version)
+            btn.addEventListener('click', handleMessage);
+            input.addEventListener('keypress', e => e.key === 'Enter' && handleMessage());
+
+            function handleMessage() {
+                const text = input.value.trim();
+                if (!text) {
+                    input.classList.add('shake');
+                    setTimeout(() => input.classList.remove('shake'), 500);
+                    return;
+                }
+
+                // Add user message
+                chat.innerHTML += `<div class="message user-message">${text}</div>`;
+                input.value = '';
+                
+                // Add typing indicator
+                const typing = document.createElement('div');
+                typing.className = 'message bot-message';
+                typing.innerHTML = '<div class="loading-dots"></div>';
+                chat.appendChild(typing);
+                chat.scrollTop = chat.scrollHeight;
+
+                // Get response
+                setTimeout(() => {
+                    typing.remove();
+                    const response = getLiaResponse(text);
+                    chat.innerHTML += `<div class="message bot-message">${response}</div>`;
+                    chat.scrollTop = chat.scrollHeight;
+                }, 1500);
+            }
+        });
+    </script>
 </body>
 </html>
