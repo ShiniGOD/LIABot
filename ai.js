@@ -1,15 +1,15 @@
 function getBotResponse(userMessage) {
-    const natureResponses = {
-        'hello': 'Hello! 🌻 I\'m Lia, your nature companion! How can I help?',
-        'hi': 'Hi there! 🌿 Lia here - ask me anything about nature!',
-        'plants': 'Plants are amazing! Lia says they can improve air quality!',
-        'weather': 'Lia knows: Weather patterns create nature\'s rhythms!',
-        'tree': 'Did you know? 🌳 Trees communicate through root networks!',
-        'animal': 'Animal fact from Lia: Octopuses have three hearts!',
-        'help': 'Lia can help with plants, animals, and weather questions!',
-        'default': 'Nature is fascinating! 🌱 What would you like Lia to explain?'
+    const liaResponses = {
+        'hello': 'Greetings! 🌻 I\'m Lia, your nature companion. How can I assist you today?',
+        'hi': 'Hello there! 🌿 Lia here - what nature wonders shall we explore?',
+        'plants': 'Did you know? 🌱 Plants purify air and boost moods! Lia recommends having at least one plant per room.',
+        'weather': 'Lia\'s weather tip: Clouds move at 30-120 mph! Each type tells a different weather story.',
+        'tree': '🌳 Fun fact from Lia: A single tree can provide oxygen for 4 people daily!',
+        'animal': '🦉 Lia says: Animals have amazing adaptations! Did you know octopuses have blue blood?',
+        'help': 'Lia can share facts about: Plants • Animals • Weather • Ecosystems • Conservation',
+        'default': 'Nature whispers secrets... 🌿 What would you like Lia to explain?'
     };
 
     userMessage = userMessage.toLowerCase();
-    return natureResponses[userMessage] || natureResponses['default'];
+    return liaResponses[userMessage] || liaResponses['default'];
 }
