@@ -1,51 +1,16 @@
-/* Mystical Color Scheme */
-body {
-    background: linear-gradient(to bottom, #0a2f0a, #1b5e20);
-    animation: skyAnimation 20s infinite linear;
-}
-
-@keyframes skyAnimation {
-    0%, 100% { background-color: #0a2f0a; }
-    50% { background-color: #1a237e; }
-}
-
-/* Elf-Styled Chat */
+/* Changed header color for Lia branding */
 .chat-header {
-    background: linear-gradient(to right, #1b5e20, #4caf50);
-    text-shadow: 0 2px 3px rgba(0,0,0,0.3);
+    background: linear-gradient(to right, #2e7d32, #4caf50);
 }
 
+/* Added Lia's icon to bot messages */
 .bot-message::before {
-    content: '🧚';
-    color: #4caf50;
-    text-shadow: 0 0 5px #8bc34a;
+    content: '🌿';
+    margin-right: 8px;
 }
 
-/* Enchanted Input */
-.chat-input {
-    background: rgba(11, 46, 11, 0.9);
-    border-top: 1px solid #8bc34a;
-}
-
-input {
-    background: rgba(255,255,255,0.1);
-    color: #fff;
-    border: 1px solid #8bc34a;
-}
-
-/* Magical Effects */
-.leaf {
-    background-image: url('data:image/svg+xml;utf8,<svg ... fill="%238bc34a" ... </svg>');
-    filter: drop-shadow(0 0 3px #8bc34a);
-}
-
-button#send-btn {
-    background: linear-gradient(to right, #8bc34a, #4caf50);
-    text-shadow: 0 1px 2px rgba(0,0,0,0.3);
-}
-
-/* Mystical Loading Animation */
-.loading-dots::after {
-    color: #8bc34a;
-    text-shadow: 0 0 5px #8bc34a;
+/* Updated placeholder text color */
+input::placeholder {
+    color: #2e7d32;
+    opacity: 0.8;
 }
