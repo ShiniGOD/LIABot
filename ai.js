@@ -1,4 +1,3 @@
-ai.js
 function getBotResponse(userMessage) {
     const natureResponses = {
         'hello': 'Hello! 🌻 How can I help you connect with nature today?',
