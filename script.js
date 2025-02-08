@@ -1,37 +1,46 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // ... existing setup ...
+    const chatMessages = document.getElementById('chat-messages');
+    const userInput = document.getElementById('user-input');
+    const sendBtn = document.getElementById('send-btn');
 
-    // Modified initial greeting
-    if (!loadChatHistory()) {
-        addBotMessage(`🌠 Welcome to the Enchanted Glade! I'm Lia, your forest elf companion. 
-            Ask about woodland creatures, ancient trees, or nature's hidden magic!`);
+    // Lia's initial greeting
+    addBotMessage("🌿 Welcome! I'm Lia, your nature guide. Ask me anything!");
+
+    function addUserMessage(message) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message user-message';
+        messageDiv.textContent = message;
+        chatMessages.appendChild(messageDiv);
+        scrollToBottom();
     }
 
-    // Updated quick topics
-    function createInteractiveButtons() {
-        const quickTopics = document.createElement('div');
-        quickTopics.className = 'quick-topics';
-        quickTopics.innerHTML = `
-            <button data-topic="forest">🌳 Forest Secrets</button>
-            <button data-topic="creatures">🦌 Woodland Friends</button>
-            <button data-topic="magic">🔮 Nature Magic</button>
-        `;
-        // ... rest of function ...
+    function addBotMessage(message) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message bot-message';
+        messageDiv.innerHTML = message;
+        chatMessages.appendChild(messageDiv);
+        scrollToBottom();
     }
 
-    // Modified message handler
-    async function handleUserMessage() {
-        // ... existing code ...
+    function handleUserMessage() {
+        const message = userInput.value.trim();
+        if (!message) return;
+
+        addUserMessage(message);
+        userInput.value = '';
+        
         setTimeout(() => {
-            try {
-                const botResponse = getLiaResponse(message);
-                typingIndicator.remove();
-                addBotMessage(botResponse);
-            } catch (error) {
-                console.error('Error:', error);
-                typingIndicator.remove();
-                addBotMessage("🍃 *Lia's glow dims* The forest whispers are faint... Try again?");
-            }
-        }, 1500);
+            const response = getBotResponse(message);
+            addBotMessage(response);
+        }, 1000);
     }
+
+    function scrollToBottom() {
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    sendBtn.addEventListener('click', handleUserMessage);
+    userInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') handleUserMessage();
+    });
 });
