@@ -1,3 +1,4 @@
+// ai.js
 function getBotResponse(userMessage) {
     const natureResponses = {
         'hello': 'Hello! 🌻 How can I help you connect with nature today?',
@@ -10,6 +11,5 @@ function getBotResponse(userMessage) {
         'default': 'Nature is full of wonders! 🌱 What would you like to explore today?'
     };
 
-    userMessage = userMessage.toLowerCase();
-    return natureResponses[userMessage] || natureResponses['default'];
+    return natureResponses[userMessage.toLowerCase()] || natureResponses['default'];
 }
