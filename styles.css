@@ -1,3 +1,4 @@
+/* styles.css */
 body {
     margin: 0;
     min-height: 100vh;
@@ -12,7 +13,6 @@ body {
     50% { background-color: #FFA07A; }
 }
 
-/* Floating Leaves */
 .leaf {
     position: absolute;
     width: 30px;
@@ -28,7 +28,7 @@ body {
 }
 
 .chat-container {
-    width: 800px; /* Wider chat box */
+    width: 800px;
     max-width: 90%;
     height: 80vh;
     border: 1px solid rgba(255, 255, 255, 0.3);
@@ -148,10 +148,6 @@ button {
 
 button:hover {
     transform: scale(1.05);
-}
-
-.loading-dots {
-    display: inline-block;
 }
 
 .loading-dots::after {
