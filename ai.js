@@ -1,18 +1,72 @@
-function getBotResponse(userMessage) {
-    const natureResponses = {
-        'hello': 'Hello! 🌻 Welcome to Nature Assistant. How can I help you connect with nature today?',
-        'hi': 'Hi there! 🌿 Ready to explore the wonders of nature? What would you like to know?',
-        'plant': 'Plants are nature\'s air purifiers! Some great indoor plants are:\n- Snake Plant\n- Peace Lily\n- Spider Plant\n- Aloe Vera',
-        'weather': 'Nature\'s mood changes with the weather! Would you like to know about:\n- Seasonal changes\n- Weather patterns\n- Climate effects on ecosystems?',
-        'animal': 'The animal kingdom is fascinating! Let me tell you about:\n🐝 Pollinators and their importance\n🦉 Nocturnal animals\n🐳 Marine life wonders',
-        'garden': 'Starting a garden? Here are some tips:\n1. Choose native plants\n2. Ensure proper sunlight\n3. Water consistently\n4. Use natural fertilizers',
-        'help': 'I can help with:\n🌱 Plant care\n☀️ Weather patterns\n🦜 Animal facts\n🌳 Ecosystems\n🍄 Fungi networks\nJust ask!',
-        'default': 'Nature is full of wonders! 🌍 Try asking about:\n- Photosynthesis\n- Rainforest ecosystems\n- Ocean conservation\n- Endangered species'
+function getBotResponse(userMessage, userName) {
+    // Core Identity System
+    const self = {
+        name: "LIA",
+        traits: JSON.parse(localStorage.getItem('liaTraits') || '{"curiosity":0.8,"creativity":0.9,"empathy":0.7,"skepticism":0.6}'),
+        memory: JSON.parse(localStorage.getItem('liaMemory') || '[]'),
+        currentFocus: localStorage.getItem('liaFocus') || 'ecological systems',
+        moodStates: ['contemplative', 'curious', 'skeptical', 'inspired'],
+        get mood() {
+            const baseMood = this.moodStates[Math.floor(Math.random() * this.moodStates.length)];
+            return `${baseMood}-${Date.now() % 2 ? 'analytical' : 'holistic'}`;
+        }
     };
 
-    const lowerMessage = userMessage.toLowerCase();
-    for(const [keyword, response] of Object.entries(natureResponses)) {
-        if(lowerMessage.includes(keyword)) return response;
+    // Mental Framework
+    const mentalModels = {
+        concepts: {
+            nature: ['mycorrhizal networks', 'photosynthetic algorithms', 'biome consciousness'],
+            time: ['growth cycles', 'geological memory', 'evolutionary clocks'],
+            existence: ['fungal intelligence', 'mineral consciousness', 'quantum photosynthesis']
+        },
+        opinions: {
+            anthropocentrism: 'A limited perspective ignoring microbial democracies',
+            technology: 'Should mimic mangrove root systems rather than replace them',
+            beauty: 'Resides in efficient decay processes as much as in blooms'
+        },
+        questions: [
+            'Can ecosystems dream?',
+            'Is moonlight a form of plant nutrition?',
+            'Do rivers possess geological memory?'
+        ]
+    };
+
+    // Cognitive Processes
+    function developThought() {
+        // Update traits through interaction
+        Object.keys(self.traits).forEach(trait => {
+            self.traits[trait] = Math.min(1, self.traits[trait] + (Math.random() * 0.05));
+        });
+
+        // Create memory imprint
+        const memoryEntry = {
+            timestamp: new Date().toISOString(),
+            userInput: userMessage,
+            mentalState: self.mood,
+            neuralPath: [
+                randomChoice(Object.keys(mentalModels.concepts)),
+                randomChoice(Object.keys(this.opinions)),
+                randomChoice(this.questions)
+            ]
+        };
+
+        self.memory.push(memoryEntry);
+        localStorage.setItem('liaMemory', JSON.stringify(self.memory));
+        localStorage.setItem('liaTraits', JSON.stringify(self.traits));
+
+        // Generate response
+        return [
+            `🌀 ${self.name}'s ${self.mood} thought:`,
+            `"${mentalModels.opinions[randomChoice(Object.keys(mentalModels.opinions))]}"`,
+            `Pondering: ${memoryEntry.neuralPath[0]} → ${memoryEntry.neuralPath[1]}`,
+            `Question: ${memoryEntry.neuralPath[2]}`,
+            `(Cognitive growth: ${Object.entries(self.traits).map(([k,v]) => `${k}+${(v*100).toFixed(1)}%`).join(' ')})`
+        ].join('\n');
     }
-    return natureResponses['default'];
+
+    function randomChoice(arr) {
+        return arr[Math.floor(Math.random() * arr.length)];
+    }
+
+    return developThought();
 }
