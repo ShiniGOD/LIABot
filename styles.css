@@ -3,200 +3,205 @@
     --chat-width: 1200px;
     --header-height: 80px;
     --input-height: 90px;
+    --primary-green: #228B22;
+    --secondary-green: #32CD32;
+    --sky-blue: #87CEEB;
+    --light-cyan: #E0FFFF;
 }
 
 body {
     margin: 0;
     min-height: 100vh;
-    background: linear-gradient(to bottom, #87CEEB, #E0FFFF);
+    background: linear-gradient(to bottom, var(--sky-blue), var(--light-cyan));
     animation: skyAnimation 20s infinite linear;
     overflow: hidden;
     font-family: 'Segoe UI', sans-serif;
 }
 
 @keyframes skyAnimation {
-    0%, 100% { background-color: #87CEEB; }
+    0%, 100% { background-color: var(--sky-blue); }
     50% { background-color: #FFA07A; }
 }
 
+/* Enhanced Leaf Animation */
 .leaf {
     position: absolute;
     width: 40px;
     height: 40px;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%23228B22"><path d="M12 3c-3.3 0-6 2.7-6 6 0 1.5.7 2.9 1.7 3.8-1 2.4-3.4 4.2-6.2 4.[...]
-    animation: float 8s infinite linear;
+    animation: float 8s infinite linear both;
     opacity: 0.7;
+    filter: drop-shadow(0 2px 4px rgba(34, 139, 34, 0.3));
+    transform-origin: center;
 }
 
 @keyframes float {
     0% {
-        transform: translateY(0);
+        transform: translateY(-10vh) rotate(0deg) scale(0.8);
+        animation-timing-function: cubic-bezier(0.55, 0.085, 0.68, 0.53);
     }
     50% {
-        transform: translateY(100px);
+        transform: translateY(100vh) rotate(180deg) scale(1);
+        animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
     100% {
-        transform: translateY(0);
+        transform: translateY(-10vh) rotate(360deg) scale(0.8);
     }
 }
 
+/* Chat Container Animation */
 .chat-container {
-    width: var(--chat-width);
-    max-width: 95%;
-    height: 90vh;
-    border: 2px solid rgba(255, 255, 255, 0.3);
-    border-radius: 20px;
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(15px);
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+    /* existing styles */
+    animation: containerFloat 6s ease-in-out infinite;
+    transform-origin: center bottom;
 }
 
-.chat-header {
-    height: var(--header-height);
-    background: linear-gradient(to right, #228B22, #32CD32);
-    color: white;
-    padding: 0 30px;
-    display: flex;
-    align-items: center;
-    border-radius: 20px 20px 0 0;
+@keyframes containerFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
 }
 
-.header-content {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-}
-
-.header-avatar {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    border: 2px solid white;
-}
-
-.chat-messages {
-    flex: 1;
-    padding: 25px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
+/* Message Animations */
 .message {
-    padding: 20px 25px;
-    border-radius: 25px;
-    max-width: 70%;
-    font-size: 1.1em;
-    line-height: 1.5;
-    position: relative;
-    min-width: 300px;
+    animation: messageAppear 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-origin: center;
+}
+
+@keyframes messageAppear {
+    0% {
+        opacity: 0;
+        transform: scale(0.8) translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
 }
 
 .user-message {
-    margin-left: auto;
-    background: linear-gradient(135deg, #228B22, #32CD32);
-    color: white;
+    animation-name: userMessageAppear;
+}
+
+@keyframes userMessageAppear {
+    0% {
+        transform: translateX(30px) scale(0.9);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0) scale(1);
+        opacity: 1;
+    }
 }
 
 .bot-message {
-    margin-right: auto;
-    background: linear-gradient(135deg, #f8fff8, #ffffff);
-    border: 2px solid rgba(34, 139, 34, 0.1);
+    animation-name: botMessageAppear;
 }
 
-.message-timestamp {
-    font-size: 0.8em;
-    color: #666;
-    margin-top: 8px;
+@keyframes botMessageAppear {
+    0% {
+        transform: translateX(-30px) scale(0.9);
+        opacity: 0;
+    }
+    100% {
+        transform: translateX(0) scale(1);
+        opacity: 1;
+    }
 }
 
-.chat-input {
-    height: var(--input-height);
-    padding: 0 25px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    background: rgba(248, 255, 248, 0.95);
-}
-
-input {
-    flex: 1;
-    padding: 18px;
-    font-size: 1.1em;
-    border-radius: 30px;
-    min-height: 50px;
-}
-
-button {
-    padding: 15px 30px;
-    border-radius: 30px;
-    font-size: 1.1em;
-}
-
-.quick-action-btn {
-    background: #32CD32;
-    color: white;
-    width: 50px;
-    height: 50px;
-    border-radius: 50% !important;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-/* Typing indicator */
+/* Enhanced Typing Animation */
 .typing-indicator {
-    display: flex;
-    gap: 5px;
-    padding: 15px 20px;
-    background: #f0f0f0;
-    border-radius: 25px;
-    width: fit-content;
-    margin: 10px 0;
+    animation: typingPulse 1.2s infinite;
+}
+
+@keyframes typingPulse {
+    0%, 100% { opacity: 0.9; transform: scale(1); }
+    50% { opacity: 0.6; transform: scale(0.98); }
 }
 
 .typing-dot {
-    width: 8px;
-    height: 8px;
-    background: #228B22;
-    border-radius: 50%;
-    animation: typing 1.4s infinite ease-in-out;
+    animation: typing 1.4s infinite ease-in-out,
+               dotColor 2.8s infinite alternate;
 }
 
-@keyframes typing {
+@keyframes dotColor {
+    from { background: var(--primary-green); }
+    to { background: var(--secondary-green); }
+}
+
+/* Button Interactions */
+button {
+    transition: all 0.3s ease;
+    transform-origin: center;
+}
+
+button:hover {
+    transform: scale(1.05) rotate(2deg);
+    filter: brightness(110%);
+}
+
+button:active {
+    transform: scale(0.95);
+}
+
+.quick-action-btn:hover {
+    animation: leafSpin 0.6s ease;
+}
+
+@keyframes leafSpin {
+    0% { transform: rotate(0deg); }
+    30% { transform: rotate(15deg); }
+    70% { transform: rotate(-10deg); }
+    100% { transform: rotate(0deg); }
+}
+
+/* Background Gradient Animation */
+.chat-header {
+    background: linear-gradient(
+        135deg,
+        var(--primary-green),
+        var(--secondary-green),
+        #3CB371
+    );
+    background-size: 200% 200%;
+    animation: headerGradient 8s ease infinite;
+}
+
+@keyframes headerGradient {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+/* Message Status Animation */
+.message-status i {
+    animation: checkBounce 0.6s ease;
+}
+
+@keyframes checkBounce {
     0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-5px); }
+    50% { transform: translateY(-3px); }
 }
 
-/* Message status indicators */
-.message-status {
-    position: absolute;
-    right: 10px;
-    bottom: 5px;
-    font-size: 0.8em;
-    color: rgba(255, 255, 255, 0.7);
+/* Input Focus Effect */
+input:focus {
+    animation: inputFocus 0.4s ease-out;
+}
+
+@keyframes inputFocus {
+    from {
+        box-shadow: 0 0 0 2px rgba(34, 139, 34, 0.3);
+    }
+    to {
+        box-shadow: 0 0 0 4px rgba(34, 139, 34, 0);
+    }
 }
 
 @media (max-width: 768px) {
-    :root {
-        --chat-width: 100%;
-        --header-height: 70px;
-    }
-    
     .chat-container {
-        height: 95vh;
-        bottom: 10px;
-        right: 10px;
+        animation: mobileFloat 4s ease-in-out infinite;
     }
     
-    .message {
-        max-width: 85%;
-        min-width: auto;
+    @keyframes mobileFloat {
+        0%, 100% { transform: translateY(0); }
+        50% { transform: translateY(-8px); }
     }
 }
