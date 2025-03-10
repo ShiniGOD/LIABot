@@ -1,95 +1,84 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const chatMessages = document.getElementById('chat-messages');
-    const userInput = document.getElementById('user-input');
-    const sendBtn = document.getElementById('send-btn');
-    let isBotTyping = false;
+[file name]: ai.js
+[file content begin]
+function getBotResponse(userMessage) {
+    const userName = localStorage.getItem('userName') || 'friend';
+    const lowerMsg = userMessage.toLowerCase();
 
-    function createMessageElement(text, isUser = true) {
-        const messageDiv = document.createElement('div');
-        messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+    // Verb database (common English verbs + variations)
+    const verbs = {
+        action: ['run', 'jump', 'create', 'build', 'make', 'write'],
+        mental: ['think', 'know', 'understand', 'believe', 'remember'],
+        communication: ['say', 'explain', 'tell', 'ask', 'describe'],
+        modal: ['can', 'should', 'would', 'might', 'must']
+    };
+
+    // Part-of-speech analysis
+    const tokenize = text => text.match(/\b(\w+)\b/g) || [];
+    const tokens = tokenize(lowerMsg);
+    
+    // Find verbs in message
+    const foundVerbs = tokens.filter(word => 
+        Object.values(verbs).flat().includes(word)
+    );
+
+    // Context patterns
+    const contextPatterns = {
+        actionVerb: new RegExp(`(${verbs.action.join('|')}) (.*)`),
+        questionWord: /^(how|what|when|why|who) (.*)/,
+        modalVerb: new RegExp(`(${verbs.modal.join('|')}) (.*)`)
+    };
+
+    // Response logic
+    if (foundVerbs.length > 0) {
+        const mainVerb = foundVerbs[0];
+        const verbType = Object.keys(verbs).find(k => verbs[k].includes(mainVerb));
         
-        const contentDiv = document.createElement('div');
-        contentDiv.textContent = text;
-        
-        const timestamp = document.createElement('div');
-        timestamp.className = 'message-timestamp';
-        timestamp.textContent = new Date().toLocaleTimeString([], { 
-            hour: '2-digit', 
-            minute: '2-digit' 
-        });
-
-        if(isUser) {
-            const status = document.createElement('div');
-            status.className = 'message-status';
-            status.innerHTML = '<i class="fas fa-check"></i>';
-            messageDiv.append(contentDiv, timestamp, status);
-        } else {
-            messageDiv.append(contentDiv, timestamp);
-        }
-
-        return messageDiv;
+        return handleVerbType(mainVerb, verbType, userMessage);
     }
 
-    function showTypingIndicator() {
-        if(isBotTyping) return;
-        
-        const typingDiv = document.createElement('div');
-        typingDiv.className = 'typing-indicator';
-        typingDiv.innerHTML = `
-            <div class="typing-dot"></div>
-            <div class="typing-dot" style="animation-delay: 0.2s"></div>
-            <div class="typing-dot" style="animation-delay: 0.4s"></div>
-        `;
-        
-        chatMessages.appendChild(typingDiv);
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-        isBotTyping = true;
-    }
-
-    function hideTypingIndicator() {
-        const typingIndicator = document.querySelector('.typing-indicator');
-        if(typingIndicator) {
-            typingIndicator.remove();
-            isBotTyping = false;
+    // Fallback to question analysis
+    for (const [pattern, handler] of Object.entries(contextPatterns)) {
+        const match = userMessage.match(pattern);
+        if (match) {
+            return handleStructure(match);
         }
     }
 
-    async function handleUserInput() {
-        const message = userInput.value.trim();
-        if(!message) return;
+    // Default response
+    return `Interesting! Could you rephrase that? I want to make sure I understand your meaning about "${tokens[0]}" correctly.`;
+}
 
-        // Add user message
-        chatMessages.appendChild(createMessageElement(message, true));
-        userInput.value = '';
-        
-        // Show typing indicator
-        showTypingIndicator();
-        
-        // Simulate API call delay
-        setTimeout(() => {
-            hideTypingIndicator();
-            const response = getBotResponse(message);
-            chatMessages.appendChild(createMessageElement(response, false));
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }, 1500);
-    }
+function handleVerbType(verb, type, originalMessage) {
+    const responses = {
+        action: [
+            `When you say "${verb}", are you looking to perform an action or create something?`,
+            `Action verbs like "${verb}" help us understand goals. What outcome are you hoping to achieve?`
+        ],
+        mental: [
+            `Thinking about "${verb}" - would you like me to help analyze or clarify this concept?`,
+            `Cognitive processes like "${verb}" are complex. Should we break this down further?`
+        ],
+        communication: [
+            `Let's focus on communication. When you say "${verb}", what specific information should I ${verb}?`,
+            `To "${verb}" effectively, what details are most important to convey?`
+        ],
+        modal: [
+            `The word "${verb}" suggests possibility. What alternatives are we considering?`,
+            `Modal verbs like "${verb}" help frame discussions. What parameters should we set?`
+        ]
+    };
 
-    // Quick action button handler
-    document.querySelector('.quick-action-btn').addEventListener('click', (e) => {
-        const message = e.currentTarget.dataset.message;
-        userInput.value = message;
-        handleUserInput();
-    });
+    return responses[type][Math.floor(Math.random() * responses[type].length)];
+}
 
-    // Event listeners
-    sendBtn.addEventListener('click', handleUserInput);
-    userInput.addEventListener('keypress', (e) => {
-        if(e.key === 'Enter') handleUserInput();
-    });
+function handleStructure(match) {
+    const [full, first, rest] = match;
+    const structureResponses = {
+        actionVerb: `When you want to ${first} ${rest}, what resources or information would be most helpful?`,
+        questionWord: `For ${first} questions about ${rest}, should I provide:\n1. Definitions\n2. Examples\n3. Step-by-step explanations?`,
+        modalVerb: `The word "${first}" suggests different possibilities. Should we explore:\nA) Practical applications\nB) Theoretical concepts\nC) Alternative approaches?`
+    };
 
-    // Initial greeting
-    setTimeout(() => {
-        chatMessages.appendChild(createMessageElement(getBotResponse('hello'), false));
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-    }, 1000);
-});
+    return structureResponses[Object.keys(contextPatterns)[match.index]];
+}
+[file content end]
