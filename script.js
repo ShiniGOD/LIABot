@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
     // Hugging Face Configuration
-    const HF_API_KEY = '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'; // Get from https://huggingface.co/settings/tokens
+    const HF_API_KEY = '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';
     const MODEL_NAME = 'facebook/blenderbot-400M-distill';
     
     // DOM Elements
@@ -14,24 +14,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // State
     let currentPersonality = "You are a helpful assistant.";
-
-    // Verify elements
-    for (const [name, element] of Object.entries(elements)) {
-        if (!element) {
-            console.error(`Missing element: ${name}`);
-            return;
-        }
-    }
+    let conversationHistory = [];
 
     // Event Listeners
     elements.setPersonalityBtn.addEventListener('click', savePersonality);
     elements.sendBtn.addEventListener('click', sendMessage);
-    elements.userInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') sendMessage();
-    });
+    elements.userInput.addEventListener('keypress', (e) => e.key === 'Enter' && sendMessage());
 
     function savePersonality() {
         currentPersonality = elements.personalityInput.value || currentPersonality;
+        conversationHistory = []; // Reset conversation with new personality
         addMessage("Personality updated!", 'bot');
     }
 
@@ -45,6 +37,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function getAIResponse(userMessage) {
         try {
+            // Format input for BlenderBot
+            const prompt = {
+                inputs: {
+                    "text": `${currentPersonality} ${userMessage}`,
+                    "past_user_inputs": conversationHistory.filter(m => m.role === 'user').map(m => m.content),
+                    "generated_responses": conversationHistory.filter(m => m.role === 'bot').map(m => m.content)
+                }
+            };
+
             const response = await fetch(
                 `https://api-inference.huggingface.co/models/${MODEL_NAME}`,
                 {
@@ -53,23 +54,15 @@ document.addEventListener('DOMContentLoaded', () => {
                         'Authorization': `Bearer ${HF_API_KEY}`,
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({
-                        inputs: {
-                            "past_user_inputs": [currentPersonality],
-                            "generated_responses": [],
-                            "text": userMessage
-                        }
-                    })
+                    body: JSON.stringify(prompt)
                 }
             );
 
-            if (!response.ok) {
-                const error = await response.json();
-                throw new Error(error.error || 'API request failed');
-            }
-
+            if (!response.ok) throw new Error(`API Error: ${response.status}`);
+            
             const data = await response.json();
             return data.generated_text;
+
         } catch (error) {
             console.error('API Error:', error);
             return `Error: ${error.message}`;
@@ -81,20 +74,26 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!text) return;
 
         elements.userInput.value = '';
-        elements.userInput.disabled = true;
-        elements.sendBtn.disabled = true;
-        elements.sendBtn.textContent = 'Sending...';
+        toggleUI(true);
 
         try {
             addMessage(text, 'user');
+            conversationHistory.push({ role: 'user', content: text });
+            
             const response = await getAIResponse(text);
             addMessage(response, 'bot');
+            conversationHistory.push({ role: 'bot', content: response });
+
         } catch (error) {
             addMessage(`Error: ${error.message}`, 'bot');
         } finally {
-            elements.userInput.disabled = false;
-            elements.sendBtn.disabled = false;
-            elements.sendBtn.textContent = 'Send';
+            toggleUI(false);
         }
+    }
+
+    function toggleUI(disabled) {
+        elements.userInput.disabled = disabled;
+        elements.sendBtn.disabled = disabled;
+        elements.sendBtn.textContent = disabled ? 'Sending...' : 'Send';
     }
 });
