@@ -1,5 +1,5 @@
 let currentPersonality = "You are a helpful assistant.";
-const DEEPSEEK_API_KEY = 'your-api-key-here'; 
+const DEEPSEEK_API_KEY = 'sk-de004f50b31a4807ba1743aa116824fd'; 
 const API_ENDPOINT = 'https://api.deepseek.com/v1/chat/completions';
 
 document.addEventListener('DOMContentLoaded', () => {
