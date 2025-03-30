@@ -1,65 +1,24 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="nature">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="theme-color" content="#228B22">
-    <title>LIA - Nature's Cognitive Companion</title>
+    <title>AI Chat</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
 <body>
-    <div class="environmental-layer">
-        <!-- Animated leaves template -->
-        <template id="leaf-template">
-            <div class="leaf" role="presentation">
-                <svg viewBox="0 0 24 24" width="40" height="40">
-                    <path fill="currentColor" d="M12 3c-3.3 0-6 2.7-6 6 0 1.5.7 2.9 1.7 3.8-1 2.4-3.4 4.2-6.2 4.2H2v2h3.5c2.9 0 5.5-1.8 6.5-4.5 1 2.7 3.6 4.5 6.5 4.5H22v-2h-3.5c-2.8 0-5.2-1.8-6.2-4.2 1-0.9 1.7-2.3 1.7-3.8 0-3.3-2.7-6-6-6z"/>
-                </svg>
-            </div>
-        </template>
-    </div>
-
-    <main class="cognitive-interface">
-        <div class="chat-container" role="dialog" aria-label="Nature Companion Interface">
-            <header class="chat-header">
-                <div class="header-content" role="banner">
-                    <div class="cognitive-avatar" aria-hidden="true">
-                        <svg viewBox="0 0 100 100" class="tree-avatar">
-                            <path d="M50 5 L60 40 L40 40 L50 5 M50 95 L50 40 M30 60 L70 60 M25 80 L75 80" 
-                                  stroke="#228B22" 
-                                  stroke-width="4" 
-                                  fill="none"/>
-                        </svg>
-                    </div>
-                    <div class="identity-container">
-                        <h1 aria-label="LIA, your nature companion">LIA</h1>
-                        <p class="status-indicator" role="status" aria-live="polite">Cognizing Ecosystem Patterns</p>
-                    </div>
-                </div>
-            </header>
-
-            <div class="chat-messages" id="chat-messages" role="log" aria-live="polite">
-                <!-- Messages injected by JavaScript -->
-            </div>
-
-            <div class="chat-input">
-                <button class="quick-action-btn" 
-                        data-message="What plants are good for home?" 
-                        aria-label="Quick plant suggestion">
-                    <i class="fas fa-seedling" role="img" aria-hidden="true"></i>
-                </button>
-                
-                <label for="user-input" class="sr-only">Enter your nature question</label>
-                <input type="text" 
-                       id="user-input" 
-                       placeholder="Engage with nature's wisdom..." 
-                       aria-label="Enter your question about nature"
-                       autocomplete="off">
-                
-                <button id="send-btn" aria-label="Send message">
-                    <i class="fas fa-paper-plane" role="img" aria-hidden="true"></i>
-                </button>
+    <div class="container">
+        <div class="personality-section">
+            <textarea id="personality" placeholder="Enter bot personality (e.g. 'A friendly assistant who loves cats and speaks like a pirate')"></textarea>
+            <button onclick="savePersonality()">Set Personality</button>
+        </div>
+        
+        <div class="chat-container">
+            <div id="chat-history"></div>
+            <div class="input-container">
+                <input type="text" id="user-input" placeholder="Type your message...">
+                <button onclick="sendMessage()">Send</button>
             </div>
         </div>
-    </
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
