@@ -1,245 +1,54 @@
-:root {
-    --forest-dark: #1a3a1f;
-    --forest-medium: #2d5a3a;
-    --forest-light: #4a7c59;
-    --forest-lighter: #7da67e;
-    --text-light: #e8f4ea;
-    --text-dark: #0a1a0d;
-    --accent-gold: #d4af37;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LIA - Goddess of Nature</title>
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>LIA - Goddess of Nature</h1>
+            <p class="subtitle">The graceful elf maiden who wields the power of life</p>
+        </header>
+        
+        <div class="chat-container">
+            <div class="chat-header">
+                <img src="images/lia-profile.jpg" alt="LIA" class="profile-pic">
+                <div class="chat-header-info">
+                    <h2>LIA</h2>
+                    <p>Online - Ready to chat about nature and magic</p>
+                </div>
+            </div>
+            
+            <div class="chat-messages" id="chat-messages">
+                <div class="message bot-message">
+                    Greetings, mortal! I am LIA, the elven Goddess of Nature. ✨<br>
+                    How may I assist you today?
+                    <div class="message-time">Just now</div>
+                </div>
+            </div>
+            
+            <div class="typing-indicator" id="typing-indicator">
+                <div class="typing-dots">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            </div>
+            
+            <div class="chat-input">
+                <input type="text" id="user-input" placeholder="Type your message..." autocomplete="off">
+                <button id="send-button">➤</button>
+            </div>
+        </div>
+        
+        <footer>
+            &copy; 2023 Temple of LIA | Created by the Maiden of Life
+        </footer>
+    </div>
 
-body {
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: var(--forest-dark);
-    color: var(--text-light);
-    background-image: url('https://images.unsplash.com/photo-1476231682828-37e571bc172f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
-    background-size: cover;
-    background-attachment: fixed;
-    background-position: center;
-    min-height: 100vh;
-}
-
-.container {
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
-}
-
-header {
-    text-align: center;
-    padding: 20px;
-    background-color: rgba(26, 58, 31, 0.8);
-    border-radius: 10px;
-    margin-bottom: 20px;
-    border: 1px solid var(--accent-gold);
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-}
-
-h1 {
-    color: var(--accent-gold);
-    margin: 0;
-    font-size: 2.5rem;
-    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-}
-
-.subtitle {
-    font-style: italic;
-    margin-top: 5px;
-    color: var(--forest-lighter);
-}
-
-.chat-container {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    background-color: rgba(45, 90, 58, 0.7);
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
-    border: 1px solid var(--forest-lighter);
-}
-
-.chat-header {
-    background-color: var(--forest-medium);
-    padding: 15px;
-    display: flex;
-    align-items: center;
-    border-bottom: 1px solid var(--forest-lighter);
-}
-
-.profile-pic {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid var(--accent-gold);
-    margin-right: 15px;
-}
-
-.chat-header-info h2 {
-    margin: 0;
-    color: var(--accent-gold);
-}
-
-.chat-header-info p {
-    margin: 5px 0 0;
-    font-size: 0.9rem;
-    color: var(--forest-lighter);
-}
-
-.chat-messages {
-    flex-grow: 1;
-    padding: 20px;
-    overflow-y: auto;
-    display: flex;
-    flex-direction: column;
-}
-
-.message {
-    max-width: 70%;
-    padding: 12px 15px;
-    margin-bottom: 15px;
-    border-radius: 18px;
-    line-height: 1.4;
-    position: relative;
-    animation: fadeIn 0.3s ease-out;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-.bot-message {
-    align-self: flex-start;
-    background-color: rgba(122, 166, 126, 0.3);
-    border: 1px solid var(--forest-lighter);
-    border-bottom-left-radius: 5px;
-    color: var(--text-light);
-}
-
-.user-message {
-    align-self: flex-end;
-    background-color: rgba(45, 90, 58, 0.9);
-    border: 1px solid var(--forest-lighter);
-    border-bottom-right-radius: 5px;
-    color: var(--text-light);
-}
-
-.message-time {
-    font-size: 0.7rem;
-    opacity: 0.7;
-    margin-top: 5px;
-    text-align: right;
-}
-
-.chat-input {
-    display: flex;
-    padding: 15px;
-    background-color: var(--forest-medium);
-    border-top: 1px solid var(--forest-lighter);
-}
-
-#user-input {
-    flex-grow: 1;
-    padding: 12px 15px;
-    border: none;
-    border-radius: 25px;
-    background-color: rgba(255, 255, 255, 0.1);
-    color: var(--text-light);
-    font-size: 1rem;
-    outline: none;
-    transition: background-color 0.3s;
-}
-
-#user-input:focus {
-    background-color: rgba(255, 255, 255, 0.2);
-}
-
-#send-button {
-    background-color: var(--forest-light);
-    color: var(--text-light);
-    border: none;
-    border-radius: 50%;
-    width: 45px;
-    height: 45px;
-    margin-left: 10px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-#send-button:hover {
-    background-color: var(--forest-lighter);
-}
-
-.typing-indicator {
-    display: none;
-    padding: 10px 15px;
-    background-color: rgba(122, 166, 126, 0.3);
-    border-radius: 18px;
-    align-self: flex-start;
-    margin-bottom: 15px;
-    border: 1px solid var(--forest-lighter);
-    border-bottom-left-radius: 5px;
-}
-
-.typing-dots {
-    display: flex;
-}
-
-.typing-dot {
-    width: 8px;
-    height: 8px;
-    background-color: var(--forest-lighter);
-    border-radius: 50%;
-    margin: 0 2px;
-    animation: typingAnimation 1.4s infinite ease-in-out;
-}
-
-.typing-dot:nth-child(1) {
-    animation-delay: 0s;
-}
-
-.typing-dot:nth-child(2) {
-    animation-delay: 0.2s;
-}
-
-.typing-dot:nth-child(3) {
-    animation-delay: 0.4s;
-}
-
-@keyframes typingAnimation {
-    0%, 60%, 100% { transform: translateY(0); }
-    30% { transform: translateY(-5px); }
-}
-
-footer {
-    text-align: center;
-    margin-top: 20px;
-    padding: 10px;
-    font-size: 0.8rem;
-    color: var(--forest-lighter);
-}
-
-/* Responsive design */
-@media (max-width: 768px) {
-    .container {
-        padding: 10px;
-    }
-    
-    .message {
-        max-width: 85%;
-    }
-    
-    h1 {
-        font-size: 2rem;
-    }
-}
+    <script src="scripts/script.js"></script>
+</body>
+</html>
