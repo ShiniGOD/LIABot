@@ -163,3 +163,29 @@ body {
     margin-bottom: 1rem;
     border-radius: 2px;
 }
+
+/* Emotional Responses Styles */
+.essence-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.essence-item {
+    padding: 8px;
+    border: 1px solid #4a694a;
+    border-radius: 12px;
+    text-align: center;
+    background: rgba(40, 80, 40, 0.2);
+}
+
+.bot-message::after {
+    content: '';
+    display: block;
+    width: 30px;
+    height: 30px;
+    background: url('images/nature-icon.png') no-repeat center;
+    margin-top: 10px;
+    opacity: 0.6;
+}
