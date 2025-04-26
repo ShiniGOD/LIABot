@@ -1,177 +1,165 @@
-/* styles/style.css */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: 'Arial', sans-serif;
+/* styles.css */
+:root {
+    --forest-deep: #0d291c;
+    --moss-green: #4a7863;
+    --spring-blossom: #ffb7c5;
+    --sunlight: #f9e076;
+    --mystic-purple: #9d7cbf;
 }
 
 body {
-    background: linear-gradient(135deg, #1a2f1a 0%, #0d1a0d 100%);
-    color: #e0e0e0;
+    background: radial-gradient(circle at center, 
+        var(--forest-deep) 0%, 
+        #081910 100%);
+    color: #e8f1ec;
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    font-family: 'Merriweather', serif;
 }
 
 .container {
-    max-width: 800px;
-    width: 95%;
-    padding: 20px;
+    max-width: 1200px;
+    padding: 2rem;
 }
 
-/* --- Centered Header --- */
-header {
+/* Enhanced Header */
+.header {
     text-align: center;
-    margin-bottom: 30px;
+    margin-bottom: 3rem;
+    position: relative;
 }
 
-header h1 {
-    color: #8bc34a;
-    font-size: 2.5em;
-    text-shadow: 0 0 10px rgba(139, 195, 74, 0.3);
-    margin-bottom: 10px;
+.title-glow {
+    font-size: 3rem;
+    color: var(--sunlight);
+    text-shadow: 0 0 20px rgba(249, 224, 118, 0.5);
+    margin-bottom: 1rem;
+    font-family: 'Cinzel Decorative', cursive;
 }
 
 .subtitle {
-    color: #689f38;
-    font-style: italic;
+    color: var(--moss-green);
+    font-size: 1.2rem;
+    letter-spacing: 0.1em;
 }
 
-/* --- Centered Chat Container --- */
+/* Mystical Chat Container */
 .chat-container {
-    background: rgba(255, 255, 255, 0.05);
-    border-radius: 15px;
-    border: 1px solid #2d4a2d;
-    box-shadow: 0 0 20px rgba(0, 50, 0, 0.3);
-    overflow: hidden;
-    margin: 0 auto;
+    background: linear-gradient(160deg, 
+        rgba(13, 41, 28, 0.95) 0%,
+        rgba(9, 25, 16, 0.95) 100%);
+    border-radius: 20px;
+    border: 2px solid var(--moss-green);
+    box-shadow: 0 0 40px rgba(74, 120, 99, 0.2);
+    backdrop-filter: blur(10px);
 }
 
-/* Centered Chat Header */
+/* Animated Profile Section */
 .chat-header {
-    background: rgba(40, 80, 40, 0.3);
-    padding: 15px;
+    padding: 2rem;
+    background: rgba(9, 25, 16, 0.8);
     display: flex;
-    flex-direction: column;
     align-items: center;
-    text-align: center;
-    border-bottom: 2px solid #2d4a2d;
+    border-bottom: 3px solid var(--moss-green);
 }
 
 .profile-pic {
-    width: 60px;
-    height: 60px;
+    width: 80px;
+    height: 80px;
     border-radius: 50%;
-    border: 2px solid #8bc34a;
-    margin-bottom: 15px;
+    border: 3px solid var(--sunlight);
+    margin-right: 1.5rem;
+    animation: pulse 2s infinite;
 }
 
-/* Centered Messages */
+/* Enchanted Messages */
 .chat-messages {
-    height: 400px;
-    overflow-y: auto;
-    padding: 20px;
-    background: url('images/leaf-pattern.png') rgba(20, 40, 20, 0.5);
-    background-blend-mode: multiply;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    height: 60vh;
+    padding: 2rem;
+    background-image: 
+        radial-gradient(circle at 100% 0%, 
+            rgba(249, 224, 118, 0.05) 0%, 
+            transparent 30%),
+        url('images/sacred-glyphs.png');
+    background-size: cover;
 }
 
 .message {
-    margin: 10px 0;
-    padding: 12px 18px;
-    border-radius: 20px;
-    max-width: 80%;
+    margin: 1.5rem 0;
+    padding: 1.5rem;
+    border-radius: 15px;
+    max-width: 70%;
+    animation: floatUp 0.4s ease-out;
     position: relative;
-    animation: fadeIn 0.3s ease-in;
-    text-align: center;
 }
 
 .bot-message {
-    background: #4a694a;
-    color: #e0ffe0;
+    background: rgba(74, 120, 99, 0.3);
+    border: 1px solid var(--moss-green);
+    margin-right: auto;
 }
 
-.message-time {
-    font-size: 0.75em;
-    color: #a5d6a7;
-    margin-top: 5px;
-    text-align: center;
-}
-
-/* Centered Typing Indicator */
-.typing-indicator {
-    padding: 15px;
-    display: none;
-    justify-content: center;
-}
-
-.typing-dots {
+/* Interactive Elements */
+.quick-replies {
     display: flex;
-    align-items: center;
+    gap: 0.8rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
 }
 
-/* Centered Input */
-.chat-input {
-    display: flex;
-    justify-content: center;
-    padding: 15px;
-    background: rgba(40, 80, 40, 0.3);
-    border-top: 2px solid #2d4a2d;
-    gap: 10px;
-}
-
-#user-input {
-    flex: 0 1 70%;
-    padding: 12px;
-    border: 1px solid #4a694a;
-    border-radius: 25px;
-    background: rgba(20, 40, 20, 0.5);
-    color: #e0ffe0;
-    text-align: center;
-    transition: all 0.3s ease;
-}
-
-#send-button {
-    background: #8bc34a;
-    border: none;
-    padding: 12px 20px;
-    border-radius: 25px;
-    color: #1a2f1a;
+.quick-reply {
+    background: rgba(157, 124, 191, 0.2);
+    border: 1px solid var(--mystic-purple);
+    color: var(--spring-blossom);
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
-/* Centered Footer */
-footer {
-    text-align: center;
-    margin-top: 30px;
-    color: #689f38;
-    font-size: 0.9em;
+/* Animations */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+    100% { transform: scale(1); }
 }
 
-/* Keep existing animations */
-@keyframes bounce { /* ... */ }
-@keyframes fadeIn { /* ... */ }
+@keyframes floatUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
 
-@media (max-width: 600px) {
-    .container {
-        padding: 10px;
-    }
-    
-    .chat-messages {
-        height: 60vh;
-        padding: 15px;
-    }
-    
-    .message {
-        max-width: 90%;
-    }
-    
-    #user-input {
-        flex: 0 1 60%;
-    }
+/* Enhanced Input */
+.enchanted-input {
+    background: rgba(9, 25, 16, 0.6);
+    border: 2px solid var(--moss-green);
+    color: var(--spring-blossom);
+    padding: 1rem;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+.magic-send {
+    background: var(--moss-green);
+    color: var(--sunlight);
+    padding: 1rem 1.5rem;
+    border-radius: 15px;
+    transition: transform 0.3s ease;
+}
+
+/* Seasonal Effects */
+.sacred-grove {
+    margin-top: 3rem;
+    text-align: center;
+    position: relative;
+}
+
+.seasonal-border {
+    height: 4px;
+    background: linear-gradient(90deg, 
+        var(--moss-green),
+        var(--sunlight),
+        var(--mystic-purple),
+        var(--spring-blossom));
+    margin-bottom: 1rem;
+    border-radius: 2px;
 }
