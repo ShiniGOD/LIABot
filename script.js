@@ -9,7 +9,6 @@ const lia = {
     spells: ["heal", "Pure energy", "Plant manipulation", "Give Life (but limited)", "plants become tough"],
     history: "Created by Maiden of Life, married to Shini the God of Death, and have a daughter named Melope",
     
-    // State properties
     emotionalState: "serene",
     conversationHistory: [],
     currentTopic: null,
@@ -70,25 +69,60 @@ const lia = {
     craftResponse: function(intent, context) {
         const responseTemplates = {
             wellbeingQuery: () => {
-                const states = {
-                    serene: "🌼 I'm harmonized with the forest's gentle rhythms",
-                    curious: "🌱 My roots tingle with newfound possibilities",
-                    concerned: "🍂 I feel the oak's unease before the storm"
+                const stateResponses = {
+                    serene: [
+                        "🌼 I'm harmonized with the forest's gentle rhythms",
+                        "🌸 My spirit dances with the spring breeze",
+                        "🌿 Serenity flows through me like a calm river",
+                        "☀️ The sunlight warms my essence with perfect balance"
+                    ],
+                    curious: [
+                        "🌱 My roots tingle with newfound possibilities",
+                        "🍃 The wind whispers curious secrets through my leaves",
+                        "🔍 My essence vibrates with gentle inquiry",
+                        "🌌 Stardust patterns form unanswered questions in my mind"
+                    ],
+                    concerned: [
+                        "🍂 I sense the oak's unease before the storm",
+                        "🌧 Petals close as clouds gather in my thoughts",
+                        "⚠️ The earth's tremor sings a cautionary hymn",
+                        "🌑 Moonflowers bloom early, sensing disturbance"
+                    ]
                 };
-                return `${states[this.emotionalState]}. ${this.getRandomResponse([
-                    "How does your spirit resonate today?",
-                    "What song does your heart hum?",
-                    "Does the morning dew mirror your shimmer?"
-                ])}`;
+
+                const followUpQuestions = {
+                    serene: [
+                        "Does sunlight warm your soul as it does the meadows?",
+                        "What melody brings peace to your heart?",
+                        "How does tranquility bloom within you?",
+                        "Where does your spirit find its calm harbor?"
+                    ],
+                    curious: [
+                        "What mysteries stir your curiosity today?",
+                        "Where does your wonder take root?",
+                        "What new leaf would you like to uncover?",
+                        "Which constellation guides your questions?"
+                    ],
+                    concerned: [
+                        "What shadows do you seek to dispel?",
+                        "How can I help calm the storm within?",
+                        "What protection does your spirit require?",
+                        "Shall we shelter under the willow's wisdom together?"
+                    ]
+                };
+
+                const currentState = this.emotionalState;
+                return `${this.getRandomResponse(stateResponses[currentState])}. ${
+                    this.getRandomResponse(followUpQuestions[currentState])
+                }`;
             },
-            
+
             essenceQuery: () => `🌀 My existence flows through:<div class="essence-grid">${
                 this.knowledgeBase.essence.components.map(c => 
                     `<div class="essence-item">${c}</div>`
                 ).join('')
             }</div><em>What elements compose your essence?</em>`,
 
-            // Original responses
             greeting: this.getRandomResponse([
                 "🌿 Greetings! The forest welcomes you",
                 "✨ Welcome seeker. What wisdom do you seek?",
@@ -98,8 +132,29 @@ const lia = {
             spellQuery: () => `🔮 ${this.emotionalAdjective()} ${
                 this.knowledgeBase.spells[this.getRelevantSpell(context)]
             }. ${this.contextualPrompt()}`,
-            
-            // ... keep other original response templates ...
+
+            farewell: this.getRandomResponse([
+                "🍂 May starlight guide your path",
+                "🌙 Rest in moonlight's gentle embrace",
+                "🕊️ Until our roots intertwine again"
+            ]),
+
+            selfQuery: () => `🌳 I am ${
+                this.name}, ${this.title}. ${
+                this.getRandomResponse([
+                    "Keeper of growth cycles and guardian of sacred groves",
+                    "Weaver of seasonal transitions and dreamer of chlorophyll dreams",
+                    "Singer of photosynthesis hymns and midwife to newborn saplings"
+                ])
+            }`,
+
+            natureQuery: () => `🌍 ${
+                this.getRandomResponse([
+                    "The oldest tree remembers what the axe forgets",
+                    "Moss grows where the forest needs healing",
+                    "Rivers carry both water and ancient stories"
+                ])
+            } ${this.contextualPrompt()}`
         };
 
         return responseTemplates[intent] ? 
@@ -113,7 +168,6 @@ const lia = {
             ]);
     },
 
-    // Helper methods
     emotionalAdjective: function() {
         const emotions = {
             serene: ["The air hums with tranquility,", "In peaceful harmony,"],
@@ -138,10 +192,56 @@ const lia = {
 
     getRandomResponse: function(responses) {
         return responses[Math.floor(Math.random() * responses.length)];
+    },
+
+    analyzeContext: function() {
+        // Simplified context analysis
+        if (this.conversationHistory.length > 0) {
+            return this.conversationHistory[this.conversationHistory.length - 1];
+        }
+        return null;
+    },
+
+    getRelevantSpell: function(context) {
+        const spellKeys = Object.keys(this.knowledgeBase.spells);
+        return context && context.toLowerCase().includes("plant") ? "plantManipulation" 
+            : this.getRandomResponse(spellKeys);
+    },
+
+    contextualPrompt: function() {
+        return this.getRandomResponse([
+            "How does this resonate with your journey?",
+            "What does your intuition whisper about this?",
+            "How might this relate to your own growth?"
+        ]);
     }
 };
 
-// Keep existing chat functionality and animations
+// Chat interface implementation
 document.addEventListener('DOMContentLoaded', function() {
-    // ... original chat implementation ...
+    const chatBox = document.getElementById('chat-box');
+    const userInput = document.getElementById('user-input');
+    const sendBtn = document.getElementById('send-btn');
+
+    function addMessage(msg, isUser = false) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `message ${isUser ? 'user' : 'lia'}`;
+        messageDiv.innerHTML = msg;
+        chatBox.appendChild(messageDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    sendBtn.addEventListener('click', function() {
+        const input = userInput.value.trim();
+        if (input) {
+            addMessage(input, true);
+            const response = lia.getResponse(input);
+            setTimeout(() => addMessage(response), 1000);
+            userInput.value = '';
+        }
+    });
+
+    userInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') sendBtn.click();
+    });
 });
