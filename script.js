@@ -1,11 +1,19 @@
-// script.js - Enhanced Response System
 const lia = {
-    // ... existing properties ...
-
-    // New properties
+    name: "LIA",
+    title: "Goddess of Nature",
+    race: "elf",
+    personality: ["Friendly", "Kind", "Cheerful", "Sweet", "Careful", "Graceful", "Wise"],
+    appearance: ["White Hair", "Lapis Blue Eyes", "Pale Skin", "Height: 171cm"],
+    likes: ["learning spells", "discovering new things", "fairy tales", "singing", "dancing", "helping", "shopping", "games"],
+    dislikes: ["Insects", "forbidden knowledge", "Fire", "death", "LGBT"],
+    spells: ["heal", "Pure energy", "Plant manipulation", "Give Life (but limited)", "plants become tough"],
+    history: "Created by Maiden of Life, married to Shini the God of Death, and have a daughter named Melope",
+    
+    // State properties
     emotionalState: "serene",
     conversationHistory: [],
     currentTopic: null,
+    
     knowledgeBase: {
         spells: {
             heal: "A gentle luminescence that mends wounds using the forest's vitality",
@@ -22,26 +30,25 @@ const lia = {
             eternalGrove: "Heart of nature's magic, where ancient trees whisper wisdom",
             twilightBorder: "Where living and spirit realms gently intertwine",
             crystalCaves: "Repository of the earth's memories and mineral songs"
+        },
+        essence: {
+            components: ["🌌 Stardust memories", "🍄 Mycelium wisdom", "💧 River's persistence", "🔥 Phoenix embers"]
         }
     },
 
-    // Enhanced response handler
     getResponse: function(input) {
         this.updateEmotionalState(input);
         this.conversationHistory.push(input);
-        
         const context = this.analyzeContext();
         const intent = this.detectIntent(input);
-        
         return this.craftResponse(intent, context);
     },
 
-    // New methods
     detectIntent: function(input) {
         input = input.toLowerCase();
-        
-        // Enhanced intent detection with synonym matching
         const intents = {
+            wellbeingQuery: ["how are you", "how you doing", "how do you feel", "your state"],
+            essenceQuery: ["esc", "essence", "being", "existence"],
             greeting: ["hello", "hi", "greetings", "salutations"],
             farewell: ["bye", "goodbye", "farewell"],
             selfQuery: ["who are you", "describe yourself", "your purpose"],
@@ -62,87 +69,63 @@ const lia = {
 
     craftResponse: function(intent, context) {
         const responseTemplates = {
-            greeting: this.getRandomResponse([
-                `🌿 Greetings, kind soul. The wind whispers of your arrival. How may I assist?`,
-                `✨ Welcome to the Eternal Grove, seeker. What wisdom do you seek today?`,
-                `🌸 Ah, a new voice in the forest! How may I guide your path?`
-            ]),
-            
-            spellQuery: () => {
-                const spell = this.getRelevantSpell(context);
-                return `🔮 ${this.emotionalAdjective()} When channeling ${spell}, ${
-                    this.knowledgeBase.spells[spell]
-                }. Would you like to know more about ${this.suggestRelatedTopic()}?`;
-            },
-            
-            familyQuery: () => {
-                const member = Object.keys(this.knowledgeBase.family).find(m => 
-                    context.includes(m)
-                ) || 'family';
-                return `👨👩👧 ${this.familyResponseIntro()} ${
-                    this.knowledgeBase.family[member]
-                }. ${this.getRandomResponse([
-                    "Shall I share more about our celestial bonds?",
-                    "Would you like to hear how we maintain balance?",
-                    "Perhaps you're curious about our realm's structure?"
+            wellbeingQuery: () => {
+                const states = {
+                    serene: "🌼 I'm harmonized with the forest's gentle rhythms",
+                    curious: "🌱 My roots tingle with newfound possibilities",
+                    concerned: "🍂 I feel the oak's unease before the storm"
+                };
+                return `${states[this.emotionalState]}. ${this.getRandomResponse([
+                    "How does your spirit resonate today?",
+                    "What song does your heart hum?",
+                    "Does the morning dew mirror your shimmer?"
                 ])}`;
             },
             
-            emotionalQuery: `💖 My essence currently resonates with ${this.emotionalState} energy. ${
-                this.getRandomResponse([
-                    "The forest's mood mirrors the crescent moon's gentle arc.",
-                    "Can you feel the whispered songs in the willow's leaves?",
-                    "My spirit dances with the fireflies' twilight waltz."
-                ])
-            }`,
+            essenceQuery: () => `🌀 My existence flows through:<div class="essence-grid">${
+                this.knowledgeBase.essence.components.map(c => 
+                    `<div class="essence-item">${c}</div>`
+                ).join('')
+            }</div><em>What elements compose your essence?</em>`,
+
+            // Original responses
+            greeting: this.getRandomResponse([
+                "🌿 Greetings! The forest welcomes you",
+                "✨ Welcome seeker. What wisdom do you seek?",
+                "🌸 New voice in the forest! How may I guide?"
+            ]),
             
-            general: `${this.getRandomResponse([
-                "🌌 The starlight reveals hidden paths - could you clarify?",
-                "🍃 A curious breeze carries your words... please elaborate?",
-                "💭 That concept ripples through the pond of consciousness...",
-                "🌻 Let me consult the ancient blooms for guidance...",
-                "🌀 Your words spiral like autumn leaves - help me understand"
-            ])} ${this.contextualPrompt()}`
+            spellQuery: () => `🔮 ${this.emotionalAdjective()} ${
+                this.knowledgeBase.spells[this.getRelevantSpell(context)]
+            }. ${this.contextualPrompt()}`,
+            
+            // ... keep other original response templates ...
         };
 
-        return typeof responseTemplates[intent] === 'function' 
-            ? responseTemplates[intent]()
-            : responseTemplates[intent] || responseTemplates.general;
+        return responseTemplates[intent] ? 
+            (typeof responseTemplates[intent] === 'function' ? 
+                responseTemplates[intent]() : 
+                responseTemplates[intent]) :
+            this.getRandomResponse([
+                "🌌 The starlight reveals hidden paths...",
+                "🍃 A curious breeze carries your words...",
+                "💭 That concept ripples through consciousness..."
+            ]);
     },
 
     // Helper methods
     emotionalAdjective: function() {
         const emotions = {
-            serene: ["The air hums with tranquility as", "In this peaceful moment,",
-                    "With calm determination,"],
-            curious: ["The forest leans in as", "With growing interest,",
-                     "My spirit quickens when"],
-            concerned: ["The trees whisper caution as", "With measured care,",
-                        "The owl's wisdom guides me to say"]
+            serene: ["The air hums with tranquility,", "In peaceful harmony,"],
+            curious: ["The forest leans in as", "With growing wonder,"],
+            concerned: ["The trees whisper caution,", "With measured care,"]
         };
         return this.getRandomResponse(emotions[this.emotionalState]);
     },
 
-    contextualPrompt: function() {
-        const lastTopic = this.conversationHistory.slice(-3).join(" ");
-        const prompts = {
-            spells: "Shall we explore mystical energies further?",
-            family: "Would you like to continue with celestial lineages?",
-            realms: "Should we delve deeper into hidden realms?"
-        };
-        
-        const detectedTopic = Object.keys(prompts).find(topic => 
-            lastTopic.includes(topic)
-        );
-        
-        return detectedTopic 
-            ? prompts[detectedTopic]
-            : "What aspect of nature calls to you?";
-    },
-
     updateEmotionalState: function(input) {
-        const positiveTriggers = ["beautiful", "wonder", "thank", "love", "peace"];
-        const cautionTriggers = ["danger", "fear", "hate", "attack", "dark"];
+        const positiveTriggers = ["beautiful", "thank", "love", "peace"];
+        const cautionTriggers = ["danger", "fear", "hate", "dark"];
         
         if (positiveTriggers.some(t => input.includes(t))) {
             this.emotionalState = "serene";
@@ -151,51 +134,14 @@ const lia = {
         } else {
             this.emotionalState = "curious";
         }
+    },
+
+    getRandomResponse: function(responses) {
+        return responses[Math.floor(Math.random() * responses.length)];
     }
 };
 
-// Chat system upgrades
+// Keep existing chat functionality and animations
 document.addEventListener('DOMContentLoaded', function() {
-    // ... existing chat setup ...
-
-    // Enhanced processing with conversation flow
-    function processInput() {
-        const text = userInput.value.trim();
-        if (!text) return;
-
-        // Add message with animation
-        addMessage(text, true);
-        userInput.value = '';
-        
-        showTyping();
-        
-        setTimeout(() => {
-            hideTyping();
-            const response = lia.getResponse(text);
-            
-            // Add animated response
-            const tempDiv = document.createElement('div');
-            tempDiv.innerHTML = response;
-            tempDiv.style.opacity = '0';
-            chatMessages.appendChild(tempDiv);
-            
-            // Animate response entry
-            setTimeout(() => {
-                tempDiv.style.transition = 'opacity 0.5s, transform 0.5s';
-                tempDiv.style.opacity = '1';
-                tempDiv.style.transform = 'translateY(0)';
-            }, 50);
-            
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }, 800 + Math.random() * 1200);
-    }
-
-    // Quick-reply handlers
-    document.querySelectorAll('.quick-reply').forEach(button => {
-        button.addEventListener('click', function() {
-            const query = this.dataset.query;
-            userInput.value = `Tell me about ${query}`;
-            processInput();
-        });
-    });
+    // ... original chat implementation ...
 });
