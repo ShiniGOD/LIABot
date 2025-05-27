@@ -5,19 +5,97 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chat Bot Indonesia</title>
     <style>
-        /* Gaya CSS tetap sama */
+        .chat-container {
+            width: 400px;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .chat-messages {
+            height: 500px;
+            overflow-y: auto;
+            padding: 15px;
+            background: #f8f9fa;
+        }
+
+        .message {
+            margin: 12px 0;
+            padding: 10px 15px;
+            border-radius: 20px;
+            max-width: 80%;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .user-message {
+            background: #007bff;
+            color: white;
+            margin-left: auto;
+            border-bottom-right-radius: 5px;
+        }
+
+        .bot-message {
+            background: #e9ecef;
+            color: #212529;
+            margin-right: auto;
+            border-bottom-left-radius: 5px;
+        }
+
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            background: white;
+            border-top: 1px solid #eee;
+        }
+
+        #user-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            margin-right: 10px;
+            font-size: 14px;
+        }
+
+        #send-btn {
+            padding: 10px 20px;
+            background: #007bff;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #send-btn:hover {
+            background: #0056b3;
+        }
+
+        .typing-indicator {
+            padding: 10px 15px;
+            display: none;
+            color: #6c757d;
+            font-style: italic;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
     <div class="chat-container">
         <div class="chat-messages" id="chat-messages">
-            <div class="message bot-message">Halo! Ada yang bisa saya bantu?</div>
+            <div class="message bot-message">Halo! Saya asisten virtual Anda. 🎉</div>
         </div>
         <div class="typing-indicator" id="typing-indicator">
-            Bot sedang mengetik...
+            <div class="dot-flashing"></div>
+            Sedang mengetik...
         </div>
         <div class="chat-input">
-            <input type="text" id="user-input" placeholder="Ketik pesan Anda...">
+            <input type="text" id="user-input" placeholder="Ketik pesan disini...">
             <button id="send-btn">Kirim</button>
         </div>
     </div>
@@ -28,111 +106,122 @@
         const sendBtn = document.getElementById('send-btn');
         const typingIndicator = document.getElementById('typing-indicator');
 
-        // Respons dalam Bahasa Indonesia
+        // Enhanced response system with Indonesian slang support
         const responseGroups = [
             {
-                triggers: ['halo', 'hai', 'hei', 'yo', 'p', 'hallo'],
+                triggers: ['halo', 'hai', 'hei', 'p', 'oi', 'bro', 'sis'],
                 responses: [
-                    "Halo! Ada yang bisa saya bantu? 👋",
-                    "Hai! Apa kabar?",
-                    "Hei! Ada yang mau ditanyakan?",
-                    "Yo! Apa yang terjadi?",
-                    "Halo! Senang berbicara denganmu 😊",
-                    "Hai! Bagaimana harimu?"
+                    "Halo! Ada yang bisa saya bantu? 😊",
+                    "Hai! Hari ini mau tanya apa?",
+                    "Hei! Langsung saja, apa kebutuhan Anda?",
+                    "Halo! Senang bisa membantu Anda hari ini 🌟"
                 ]
             },
             {
-                triggers: ['dadah', 'selamat tinggal', 'sampai jumpa', 'bye', 'daa'],
+                triggers: ['apa kabar', 'kabarmu', 'gimana', 'kabar'],
                 responses: [
-                    "Sampai jumpa! Semoga harimu menyenangkan 🐊",
-                    "Dadah! Jangan lupa tersenyum hari ini 😊",
-                    "Sampai bertemu lagi! ✌️",
-                    "Selamat tinggal! Jaga kesehatan ya!",
-                    "Dadah! Semoga hari mu menyenangkan!"
+                    "Alhamdulillah baik! Anda bagaimana? 😇",
+                    "Saya bot jadi selalu siap membantu! 💪",
+                    "Sedang semangat nih, ada yang bisa dibantu? 🚀"
                 ]
             },
             {
-                triggers: ['terima kasih', 'makasih', 'thanks', 'trims'],
+                triggers: ['terima kasih', 'makasih', 'trims', 'thanks', 'tengkyu'],
                 responses: [
-                    "Sama-sama! 😊",
-                    "Senang bisa membantu!",
-                    "Jangan sungkan untuk bertanya lagi!",
-                    "Siap! Kalau ada apa-apa, hubungi saya lagi 😇",
-                    "Dengan senang hati! 😄"
+                    "Sama-sama! Senang bisa membantu 😊",
+                    "Jangan sungkan untuk bertanya lagi ya!",
+                    "Dengan senang hati! 👍"
                 ]
             },
             {
-                triggers: ['apa kabar', 'how are you', 'gimana kabarmu'],
+                triggers: ['bantuan', 'tolong', 'help', 'bantu'],
                 responses: [
-                    "Saya hanya bot, tapi baik-baik saja! 🤖",
-                    "Saya selalu siap membantu Anda! 💻",
-                    "Program saya berjalan dengan lancar! 🚀",
-                    "Sehat selalu karena diisi listrik! ⚡",
-                    "Saya tidak punya perasaan, tapi terima kasih sudah bertanya 😊"
-                ]
-            },
-            {
-                triggers: ['lucu', 'haha', 'wkwk', 'ngakak'],
-                responses: [
-                    "Wah, ternyata saya bisa melucu juga! 😄",
-                    "Hahaha, senang bisa menghiburmu!",
-                    "WKWKWK 😁",
-                    "Jangan ketawa terlalu keras nanti sakit perut lho!",
-                    "Saya juga suka bercanda! 😎"
+                    "Tentu! Coba jelaskan kebutuhan Anda...",
+                    "Saya siap membantu. Apa yang Anda butuhkan?",
+                    "Ceritakan masalah Anda, saya akan coba bantu 🤔"
                 ]
             }
         ];
 
         const defaultResponses = [
-            "Maaf, saya tidak mengerti. Bisakah Anda mengulanginya?",
-            "Bisa dijelaskan dengan cara lain?",
-            "Wah, saya belum paham nih. Coba tanya hal lain?",
-            "Sepertinya saya perlu belajar lebih banyak. Ada pertanyaan lain?",
-            "Mohon maaf, bisa diperjelas maksudnya?",
-            "Saya masih belajar. Bisa pakai kata yang lebih sederhana?"
+            "Maaf saya belum paham, bisa dijelaskan dengan cara lain?",
+            "Wah pertanyaan menarik! Bisa diperjelas maksudnya?",
+            "Sepertinya saya perlu belajar lagi nih 😅",
+            "Coba gunakan kata kunci yang berbeda ya..."
         ];
 
-        // Fungsi lainnya tetap sama
-        function addMessage(message, isUser = false) {
+        // Improved message processing with typo tolerance
+        function processInput(text) {
+            return text.toLowerCase()
+                .replace(/[^a-z0-9áàâäãåçéèêëíìîïñóòôöõúùûüýÿæœ ]/g, ' ')
+                .replace(/\b(bg|dng|yg|tdk|gmn|brp|sblm)\b/g, match => ({
+                    'bg': 'bang', 'dng': 'dengan', 'yg': 'yang', 
+                    'tdk': 'tidak', 'gmn': 'gimana', 'brp': 'berapa',
+                    'sblm': 'sebelum'
+                }[match]))
+                .replace(/\s+/g, ' ')
+                .trim();
+        }
+
+        function findBestResponse(processedText) {
+            // Priority 1: Exact match
+            for (const group of responseGroups) {
+                for (const trigger of group.triggers) {
+                    if (processedText.includes(trigger)) {
+                        return group.responses[Math.floor(Math.random() * group.responses.length)];
+                    }
+                }
+            }
+
+            // Priority 2: Partial match (3 first letters)
+            for (const group of responseGroups) {
+                for (const trigger of group.triggers) {
+                    if (processedText.includes(trigger.substring(0, 3))) {
+                        return group.responses[Math.floor(Math.random() * group.responses.length)];
+                    }
+                }
+            }
+
+            // Priority 3: Default response
+            return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
+        }
+
+        function addMessage(text, isUser = false) {
             const messageDiv = document.createElement('div');
             messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
-            messageDiv.textContent = message;
+            messageDiv.textContent = text;
             chatMessages.appendChild(messageDiv);
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
-        function getBotResponse(userMessage) {
-            const cleanMessage = userMessage.toLowerCase().replace(/[^a-z]/g, ' ');
-            
-            return responseGroups.find(group => 
-                group.triggers.some(trigger => 
-                    cleanMessage.includes(trigger)
-                )
-            )?.responses[Math.floor(Math.random() * group.responses.length)] 
-            || defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
-        }
-
         async function handleUserInput() {
-            const message = userInput.value.trim();
-            if (!message) return;
-            
-            addMessage(message, true);
+            const rawInput = userInput.value.trim();
+            if (!rawInput) return;
+
+            addMessage(rawInput, true);
             userInput.value = '';
             
             typingIndicator.style.display = 'block';
             
-            await new Promise(resolve => setTimeout(resolve, 800 + Math.random() * 700));
+            await new Promise(resolve => setTimeout(resolve, 800));
             
             typingIndicator.style.display = 'none';
-            const response = getBotResponse(message);
+            const processedText = processInput(rawInput);
+            const response = findBestResponse(processedText);
             addMessage(response);
         }
 
+        // Event handling
         sendBtn.addEventListener('click', handleUserInput);
         userInput.addEventListener('keypress', e => e.key === 'Enter' && handleUserInput());
 
-        // Pesan awal
-        setTimeout(() => addMessage("Tips: Coba ucapkan 'halo' atau 'apa kabar'! 😊"), 500);
+        // Initial setup
+        setTimeout(() => {
+            addMessage("Coba ketik:");
+            addMessage("- 'Halo' 👋");
+            addMessage("- 'Apa kabar?' 😊");
+            addMessage("- 'Butuh bantuan' 🆘");
+        }, 1000);
     </script>
 </body>
 </html>
