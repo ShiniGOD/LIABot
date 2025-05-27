@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Bot</title>
+    <title>Enhanced Chat Bot</title>
     <style>
-        /* Chat container */
         .chat-container {
             width: 400px;
             margin: 20px auto;
@@ -14,7 +13,6 @@
             font-family: Arial, sans-serif;
         }
 
-        /* Chat messages area */
         .chat-messages {
             height: 400px;
             overflow-y: auto;
@@ -22,7 +20,6 @@
             background-color: #f9f9f9;
         }
 
-        /* Individual message styles */
         .message {
             margin: 10px 0;
             padding: 8px 12px;
@@ -30,21 +27,18 @@
             max-width: 70%;
         }
 
-        /* User message */
         .user-message {
             background-color: #007bff;
             color: white;
             margin-left: auto;
         }
 
-        /* Bot message */
         .bot-message {
             background-color: #e9ecef;
             color: black;
             margin-right: auto;
         }
 
-        /* Input area */
         .chat-input {
             display: flex;
             padding: 10px;
@@ -72,17 +66,18 @@
             background-color: #0056b3;
         }
 
-        /* Typing indicator */
         .typing-indicator {
             padding: 10px;
             display: none;
+            font-style: italic;
+            color: #666;
         }
     </style>
 </head>
 <body>
     <div class="chat-container">
         <div class="chat-messages" id="chat-messages">
-            <div class="message bot-message">Hello! How can I help you today?</div>
+            <div class="message bot-message">Hello! I'm your chat buddy. What's up?</div>
         </div>
         <div class="typing-indicator" id="typing-indicator">
             Bot is typing...
@@ -99,15 +94,75 @@
         const sendBtn = document.getElementById('send-btn');
         const typingIndicator = document.getElementById('typing-indicator');
 
-        // Simple responses array
-        const botResponses = {
-            'hello': 'Hello! How can I assist you?',
-            'how are you': 'I\'m just a bot, but thanks for asking!',
-            'bye': 'Goodbye! Have a great day!',
-            'default': 'I didn\'t understand that. Can you please rephrase?'
-        };
+        // Enhanced response system
+        const responseGroups = [
+            {
+                triggers: ['hello', 'hi', 'hey', 'yo', 'sup', 'howdy', 'greetings'],
+                responses: [
+                    "Hi there! 👋 What's cooking?",
+                    "Hello! Ready to chat?",
+                    "Hey! How can I help you today?",
+                    "Yo! What's up?",
+                    "Howdy partner! 🤠",
+                    "Greetings human!",
+                    "Hi! Let's talk!",
+                    "Hey there! What's the vibe?"
+                ]
+            },
+            {
+                triggers: ['bye', 'goodbye', 'see ya', 'cya', 'later'],
+                responses: [
+                    "Later alligator! 🐊",
+                    "Catch you on the flip side!",
+                    "Peace out! ✌️",
+                    "Until next time!",
+                    "Take care! 😊",
+                    "Bye! Come back soon!"
+                ]
+            },
+            {
+                triggers: ['thank you', 'thanks', 'thx', 'ty', 'appreciate'],
+                responses: [
+                    "You're welcome! 😊",
+                    "My pleasure!",
+                    "No worries!",
+                    "Anytime!",
+                    "Happy to help! 😇",
+                    "Don't mention it!"
+                ]
+            },
+            {
+                triggers: ['how are you', 'how r u', 'hru', 'status'],
+                responses: [
+                    "I'm 100% digital awesomeness! 💻",
+                    "Feeling electric! ⚡",
+                    "All systems go! 🚀",
+                    "I'm just ones and zeros, but feeling great!",
+                    "Running at optimal parameters! 📈"
+                ]
+            },
+            {
+                triggers: ['lol', 'haha', 'funny', 'lmao'],
+                responses: [
+                    "Glad I could make you laugh! 😄",
+                    "I should do stand-up! 🎤",
+                    "Laughter is the best medicine! 💊",
+                    "I'm here all week! 😎",
+                    "That's what I'm here for! 😁"
+                ]
+            }
+        ];
 
-        // Add message to chat
+        const defaultResponses = [
+            "Hmm, tell me more about that!",
+            "Interesting! Could you explain differently?",
+            "I'm still learning - try another angle?",
+            "Let's switch gears - ask me something else!",
+            "I didn't catch that. Mind rephrasing?",
+            "Could you elaborate on that thought?",
+            "I might need some help with that topic!"
+        ];
+
         function addMessage(message, isUser = false) {
             const messageDiv = document.createElement('div');
             messageDiv.classList.add('message');
@@ -117,46 +172,44 @@
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
-        // Get bot response
         function getBotResponse(userMessage) {
-            const lowerCaseMessage = userMessage.toLowerCase();
-            for (const key in botResponses) {
-                if (lowerCaseMessage.includes(key)) {
-                    return botResponses[key];
-                }
+            const lowerMessage = userMessage.toLowerCase();
+            let foundGroup = responseGroups.find(group => 
+                group.triggers.some(trigger => lowerMessage.includes(trigger))
+            );
+
+            if (foundGroup) {
+                return foundGroup.responses[Math.floor(Math.random() * foundGroup.responses.length)];
             }
-            return botResponses['default'];
+            
+            return defaultResponses[Math.floor(Math.random() * defaultResponses.length)];
         }
 
-        // Handle user input
         function handleUserInput() {
             const message = userInput.value.trim();
             if (message) {
                 addMessage(message, true);
                 userInput.value = '';
                 
-                // Show typing indicator
                 typingIndicator.style.display = 'block';
                 
-                // Simulate bot response delay
                 setTimeout(() => {
                     typingIndicator.style.display = 'none';
                     const response = getBotResponse(message);
                     addMessage(response);
-                }, 1500);
+                }, 1000 + Math.random() * 1000);
             }
         }
 
-        // Event listeners
         sendBtn.addEventListener('click', handleUserInput);
         userInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                handleUserInput();
-            }
+            if (e.key === 'Enter') handleUserInput();
         });
 
         // Initial bot message
-        addMessage("Welcome! Ask me anything.", false);
+        setTimeout(() => {
+            addMessage("Pro tip: Try different greetings! I've got multiple responses 😉");
+        }, 2000);
     </script>
 </body>
 </html>
