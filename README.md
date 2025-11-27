@@ -193,8 +193,8 @@ Pull requests and suggestions are welcome! See the code comments for extension p
 ---
 
 **Enjoy streaming and chatting with Lia!**
-<<<<<<< HEAD
 =======
 
 
->>>>>>> ee5982469bfd0614a7d5ea5ef8b0c5ecaaa93f81
+ee5982469bfd0614a7d5ea5ef8b0c5ecaaa93f81
+
