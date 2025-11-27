@@ -1,7 +1,11 @@
 
 # Lia V2 - Streaming AI (Neuro-sama Style)
 
+<<<<<<< HEAD
+![Lia V2 Demo](./assets/machine-love.gif)
+=======
 ![Lia V2 Demo](./assets/demo.gif)
+>>>>>>> ee5982469bfd0614a7d5ea5ef8b0c5ecaaa93f81
 
 ---
 
@@ -191,3 +195,7 @@ Pull requests and suggestions are welcome! See the code comments for extension p
 ---
 
 **Enjoy streaming and chatting with Lia!**
+<<<<<<< HEAD
+=======
+
+>>>>>>> ee5982469bfd0614a7d5ea5ef8b0c5ecaaa93f81
