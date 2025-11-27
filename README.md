@@ -1,7 +1,7 @@
 
 # Lia V2 - Streaming AI (Neuro-sama Style)
 
-![Lia V2 Demo](https://tenor.com/view/machine-love-kasane-teto-jamie-paige-gif-6579483533734216745)
+![Lia V2 Demo](https://tenor.com/view/machine-love-kasane-teto-jamie-paige-gif-6579483533734216745](https://tenor.com/view/machine-love-kasane-teto-jamie-paige-gif-6579483533734216745)
 
 ---
 
@@ -191,4 +191,5 @@ Pull requests and suggestions are welcome! See the code comments for extension p
 ---
 
 **Enjoy streaming and chatting with Lia!**
+
 
