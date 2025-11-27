@@ -1,5 +1,24 @@
-<!-- Demo GIF: Replace the link below with your own GIF URL -->
+
+# Lia V2 - Streaming AI (Neuro-sama Style)
+
 ![Lia V2 Demo](https://media.tenor.com/1QnQ2E31E4gAAAAC/machine-love-kasane-teto.gif)
+
+---
+
+
+# Features
+
+- **No API Keys Required**: Works offline, no subscriptions needed
+- **Context Memory**: Remembers long conversations and topics
+- **Personality Engine**: Consistent, sweet, and kind character
+- **Response Variety**: Natural, non-repetitive replies
+- **Emotion Detection**: Senses your mood and responds accordingly
+- **TTS (Text-to-Speech)**: Voice output for streaming or fun
+- **Twitch Integration**: Reads and responds to Twitch chat
+- **Custom Knowledge**: Teach Lia new facts and responses
+- **Persistent Memory**: Saves all chats and knowledge
+
+---
 
 ## Requirements
 
@@ -20,23 +39,33 @@ Install all recommended packages:
 ```powershell
 pip install pyttsx3 googletrans==4.0.0-rc1 sounddevice vosk pygame numpy soundfile obs-websocket-py
 ```
-# Lia V2 - Streaming AI (Neuro-sama Style)
-
-## Features
-
-- **No API Keys Required**: Works offline, no subscriptions needed
-- **Context Memory**: Remembers long conversations and topics
-- **Personality Engine**: Consistent, sweet, and kind character
-- **Response Variety**: Natural, non-repetitive replies
-- **Emotion Detection**: Senses your mood and responds accordingly
-- **TTS (Text-to-Speech)**: Voice output for streaming or fun
-- **Twitch Integration**: Reads and responds to Twitch chat
-- **Custom Knowledge**: Teach Lia new facts and responses
-- **Persistent Memory**: Saves all chats and knowledge
 
 ---
 
+
 ## Quick Start
+### VoiceVox (Japanese/Anime TTS, Recommended for Streaming)
+
+Lia supports [VoiceVox](https://voicevox.hiroshiba.jp/) for high-quality Japanese/anime-style TTS.
+
+**Setup:**
+1. Download VoiceVox Engine from [here](https://github.com/VOICEVOX/voicevox_engine/releases) (choose Windows or your OS)
+2. Extract and run `run.exe` (Windows) or the appropriate binary for your OS
+3. By default, VoiceVox runs at `http://127.0.0.1:50021`
+4. Lia will auto-detect VoiceVox if running
+
+**Configuration:**
+- You can change the speaker or host in `streaming/tts_engine.py`:
+  ```python
+  StreamTTS(use_voicevox=True, voicevox_host='http://127.0.0.1:50021', voicevox_speaker=1)
+  ```
+- For more voices, see the VoiceVox documentation or UI
+
+**Troubleshooting:**
+- If you see "VoiceVox not available" in the logs, make sure the engine is running and accessible at the correct port.
+- For best results, use with Japanese text or anime-style English.
+
+---
 
 ### 1. Run Lia in Console
 ```powershell
@@ -125,13 +154,6 @@ print(response)
 
 ---
 
-## Requirements
-- Python 3.7+
-- `pyttsx3` (for TTS, optional)
-- `obs-websocket-py` (for OBS integration, optional)
-- Ollama (for LLM integration, optional)
-
----
 
 ## Example Conversation
 ```
@@ -169,4 +191,3 @@ Pull requests and suggestions are welcome! See the code comments for extension p
 ---
 
 **Enjoy streaming and chatting with Lia!**
-
