@@ -1,0 +1,18 @@
+# Byte-compiled / cache
+__pycache__/
+*.py[cod]
+
+# Data and personal history
+/data/*.json
+
+# Large models and binaries
+streaming/piper_models/
+streaming/vosk_models/
+windows-cpu/model/
+
+# System files
+.DS_Store
+Thumbs.db
+
+# VSCode settings
+.vscode/
